@@ -1,2 +1,9 @@
-# ad-network-sdk-documentation
-Documentation for ad-network-sdk-documentation
+# gg-network-sdk-documentation
+
+Документация рекламного SDK от Green Grey на базе Obsidian.
+
+Для комфортного использования рекомендуется установить [Obsidian MD](https://obsidian.md/), склонировать репозиторий с документацией себе на диск и открыть папку с как Obsidian project
+
+Или просто использовать данный репозиторий как коллекцию .md файлов.
+
+Начать ознакомление с документацией можно с [главной страницы](storage/index.md)
