@@ -1,0 +1,102 @@
+{
+  "main": {
+    "id": "e75291b8b846aa86",
+    "type": "split",
+    "children": [
+      {
+        "id": "179faba4d532d056",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "storage/api/api.md",
+            "mode": "preview"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "d9166e98054e648c",
+    "type": "split",
+    "children": [
+      {
+        "id": "4d1321c3113d4a14",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "def549e1ea6c71d7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "09a1a7254e57e71b",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "5df4c2e3e65d9721",
+    "type": "split",
+    "children": [
+      {
+        "id": "f39deef5d719bcc5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7edd3a65d1595c05",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "storage/api/api.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "179faba4d532d056",
+  "lastOpenFiles": [
+    "storage/api/api.md",
+    "storage/api/enums/enums.md",
+    "storage/api/listeners/listeners.md",
+    "storage/api/methods/AdNetworkSDK.md",
+    "storage/api/enums/AdType.md",
+    "storage/api/enums/ShowErrorType.md",
+    "storage/api/enums/LoadErrorType.md",
+    "storage/api/enums/InitializationErrorType.md",
+    "storage/api/enums/ShowCompletionState.md",
+    "storage/api/listeners/IAdInitializationListener/OnInitializationComplete.md"
+  ]
+}
