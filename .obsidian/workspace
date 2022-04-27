@@ -9,8 +9,8 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "storage/api/api.md",
-            "mode": "preview"
+            "file": "storage/api/listeners/IAdShowListener/OnShowComplete.md",
+            "mode": "source"
           }
         }
       }
@@ -68,7 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "storage/api/api.md",
+                "file": "storage/api/listeners/IAdShowListener/OnShowComplete.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,6 +88,7 @@
   },
   "active": "179faba4d532d056",
   "lastOpenFiles": [
+    "storage/api/listeners/IAdShowListener/OnShowComplete.md",
     "storage/api/api.md",
     "storage/api/enums/enums.md",
     "storage/api/listeners/listeners.md",
@@ -96,7 +97,6 @@
     "storage/api/enums/ShowErrorType.md",
     "storage/api/enums/LoadErrorType.md",
     "storage/api/enums/InitializationErrorType.md",
-    "storage/api/enums/ShowCompletionState.md",
-    "storage/api/listeners/IAdInitializationListener/OnInitializationComplete.md"
+    "storage/api/enums/ShowCompletionState.md"
   ]
 }
