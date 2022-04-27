@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "storage/api/listeners/IAdInitializationListener/IAdInitializationListener.md",
+            "file": "storage/manual/main-principles.md",
             "mode": "source"
           }
         }
@@ -68,7 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "storage/api/listeners/IAdInitializationListener/IAdInitializationListener.md",
+                "file": "storage/manual/main-principles.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,6 +88,7 @@
   },
   "active": "179faba4d532d056",
   "lastOpenFiles": [
+    "storage/manual/main-principles.md",
     "storage/api/listeners/IAdInitializationListener/IAdInitializationListener.md",
     "storage/api/listeners/IAdShowListener/OnShowComplete.md",
     "storage/api/api.md",
@@ -96,7 +97,6 @@
     "storage/api/methods/AdNetworkSDK.md",
     "storage/api/enums/AdType.md",
     "storage/api/enums/ShowErrorType.md",
-    "storage/api/enums/LoadErrorType.md",
-    "storage/api/enums/InitializationErrorType.md"
+    "storage/api/enums/LoadErrorType.md"
   ]
 }
