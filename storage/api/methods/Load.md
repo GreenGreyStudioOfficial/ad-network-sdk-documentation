@@ -22,4 +22,4 @@
 -|-|-
 [AdType](../enums/AdType.md) | `_adType` | `Тип рекламного объявления`
 [IAdLoadListener](../listeners/IAdLoadListener/IAdLoadListener.md) | `_listener` | `Реализация слушателя загрузки`
-string | `_placementId` | `Плейсмент рекламного креатива`
+`string` | `_placementId` | `Плейсмент рекламного креатива`

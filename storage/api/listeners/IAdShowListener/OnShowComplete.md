@@ -5,10 +5,10 @@
 
 ## Объявление:
 
-`public void OnShowComplete(string _id, string _bidid, ShowCompletionState _showCompletionState);`
+`void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)`
 
 тип | имя | описание
 -|-|-
-`string` | `_id` | Индетификатор показываемого рекламного объявления
-`string` | `_bidid` | Индетификатор показываемого рекламного объявления для валидации на сервере
+[AdType](../enums/AdType.md) | `_adType` | Тип рекламного креатива
 [ShowCompletionState](../../enums/ShowCompletionState.md) | `_showCompletionState` | Статус завершения показа
+`string` | `_validationId` | Идентификатор показываемого рекламного объявления для валидации на сервере.
