@@ -4,9 +4,18 @@
 ## Публичные методы:
 метод | описание
 -|-
-[OnInitializationComplete](OnInitializationComplete.md) | Обработчик завершения инициализации
-[OnInitializationError](OnInitializationError.md) | Обработчик ошибок инициализации
+[Initialize](Initialize.md) | Инициализация коннектора
+[Load](Load.md) | Загрузка креатива
+[Show](Show.md) | Показ креатива
+[GetSupportedAdTypes](GetSupportedAdTypes.md) | Получить список поддерживаемых [типов](../enums/AdType.md)
+[GetSdkId](GetSdkId.md) | Получить айди
+
+## Публичные свойства:
+тип | имя | описание
+-|-|-
+`bool` | `isInitialized` | Инициализирован ли коннектор
+`bool` | `isInitializeStarted` | Начат ли процесс инициализации
 
 ## Namespace:
 
-`GreenGrey.AdNetworkSDK.Interfaces.Listeners`
+`GreenGrey.AdNetworkSDK.Interfaces.Connector`
