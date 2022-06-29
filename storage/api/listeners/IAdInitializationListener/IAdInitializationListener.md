@@ -8,6 +8,7 @@
 -|-
 [OnInitializationComplete](OnInitializationComplete.md) | Обработчик завершения инициализации
 [OnInitializationError](OnInitializationError.md) | Обработчик ошибок инициализации
+[OnInitializationWarning](OnInitializationWarning.md) | Обработчик не критических ошибок инициализации
 
 ## Namespace:
 
