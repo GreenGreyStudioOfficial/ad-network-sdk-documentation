@@ -9,6 +9,6 @@
 
 тип | имя | описание
 -|-|-
-[AdType](../enums/AdType.md) | `_adType` | Тип рекламного креатива
+[AdType](../../enums/AdType.md) | `_adType` | Тип рекламного креатива
 [ShowErrorType](../../enums/ShowErrorType.md) | `_error` | Тип ошибки
 `string` | `_errorMessage` | Информация об ошибке
