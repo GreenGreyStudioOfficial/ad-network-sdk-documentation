@@ -29,6 +29,6 @@
 
 тип | имя | описание
 -|-|-
-[AdNetworkInitParams](../models/AdNetworkInitParams.md) | `_adNetworkInitParams` | Параметры инициализации рекламной сетки Green Grey
+[AdNetworkInitParams](../models/AdNetworkInitParams.md) | `_adNetworkInitParams` | Параметры инициализации рекламной сети Green Grey
 [IAdInitializationListener](../listeners/IAdInitializationListener/IAdInitializationListener.md) | `_listener` | Реализация слушателя инициализации
 [ISDKConnector[]](../connectors/ISDKConnector.md) | `_otherConnectors` | Массив реализаций коннекторов со сторонними sdk
