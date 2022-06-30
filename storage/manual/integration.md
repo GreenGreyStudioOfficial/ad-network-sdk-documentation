@@ -36,4 +36,4 @@ GAME_ID - идентификатор приложения в системе по
 
 ---
 
-[Далее >>](main-principles.md)
+[<< назад](manual.md) [далее >>](main-principles.md)
