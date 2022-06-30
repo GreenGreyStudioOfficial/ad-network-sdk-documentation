@@ -110,7 +110,7 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
         Debug.LogError($"Show [{_adType}]: failed with error [{_error}]: {_errorMessage}");  
     }    
 	
-	#endregion  
+    #endregion  
 }
 ```
 ---
