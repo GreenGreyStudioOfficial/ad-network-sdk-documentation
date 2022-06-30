@@ -5,8 +5,8 @@
 
 ## Объявление:
 
-`public void OnShowStart(string _id);`
+`void OnShowStart(AdType _adType)`
 
 тип | имя | описание
 -|-|-
-`string` | `_id` | Индетификатор показываемого рекламного объявления
+[AdType](../enums/AdType.md) | `_adType` | Тип рекламного креатива

@@ -1,7 +1,7 @@
 # IAdShowListener
 Интерфейс слушателя показа рекламного объявления. Позволяет контролировать выполнение процесса показа.
 
-Смотрите также: [IAdInitializationListener](../IAdInitializationListener/IAdInitializationListener.md), [IAdLoadListener](../IAdLoadListener/IAdLoadListener.md)
+Смотрите также: [IAdInitializationListener](../IAdInitializationListener/IAdInitializationListener.md), [IAdLoadListener](../IAdLoadListener/IAdLoadListener.md), [listeners](../listeners.md)
 
 ## Публичные методы:
 метод | описание
