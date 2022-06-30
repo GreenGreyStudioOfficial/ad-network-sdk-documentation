@@ -18,7 +18,8 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
     [SerializeField] private Button m_showButton;  
   
     //Last loaded adType  
-    private AdType m_adType;  
+    private AdType m_adType;
+	
     #region MonoBehaviour  
   
     private void Start()  
@@ -48,7 +49,7 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
         AdNetworkSDK.Load(AdType.REWARDED, this, null);  
     }
 	
-	private void ShowButtonAction()  
+    private void ShowButtonAction()  
     {        
         Debug.Log($"Start showing with type: [{m_adType}]");  
         AdNetworkSDK.Show(m_adType, this);  
@@ -64,12 +65,12 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
         m_loadButton.interactable = true;  
     }  
     
-	public void OnInitializationError(InitializationErrorType _error, string _errorMessage)  
+    public void OnInitializationError(InitializationErrorType _error, string _errorMessage)  
     {        
         Debug.LogError($"Initialization failed with error [{_error}]:{_errorMessage}");  
     }  
     
-	public void OnInitializationWarning(InitializationWarningType _warningType, string _warningMessage)  
+    public void OnInitializationWarning(InitializationWarningType _warningType, string _warningMessage)  
     {        
         Debug.Log($"Warning: {_warningType.ToString()}. {_warningMessage}");  
     }  
@@ -84,7 +85,7 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
         Debug.Log($"LazyLoad [{m_adType}]: SUCCESS");  
     }    
 	
-	public void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)  
+    public void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)  
     {        
         Debug.LogError($"LazyLoad: failed with error [{_error}]: {_errorMessage}");  
     } 
@@ -99,12 +100,12 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
         m_showButton.interactable = false;  
     }  
     
-	public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)  
+    public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)  
     {        
         Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] complete state\nValidationId: {_validationId}");  
     }  
     
-	public void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)  
+    public void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)  
     {        
         Debug.LogError($"Show [{_adType}]: failed with error [{_error}]: {_errorMessage}");  
     }    
