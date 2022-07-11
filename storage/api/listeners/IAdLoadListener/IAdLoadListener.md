@@ -1,7 +1,7 @@
 # IAdLoadListener
 Интерфейс слушателя загрузки рекламного объявления. Позволяет контролировать выполнение процесса загрузки.
 
-Смотрите также: [IAdInitializationListener](../IAdInitializationListener/IAdInitializationListener.md), [IAdShowListener](../IAdShowListener/IAdShowListener.md)
+Смотрите также: [IAdInitializationListener](../IAdInitializationListener/IAdInitializationListener.md), [IAdShowListener](../IAdShowListener/IAdShowListener.md), [listeners](../listeners.md)
 
 ## Публичные методы:
 метод | описание

@@ -8,3 +8,7 @@
 -   [Listeners](listeners/listeners.md)
     
 -   [Enums](enums/enums.md)
+    
+-   [Models](models/models.md)
+    
+-   [Connectors](connectors/connectors.md)

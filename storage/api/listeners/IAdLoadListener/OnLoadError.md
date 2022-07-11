@@ -5,10 +5,10 @@
 
 ## Объявление:
 
-`public void OnLoadError(LoadErrorType _error, string _id, string _errorMessage);`
+`void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)`
 
 тип | имя | описание
 -|-|-
+[AdType](../enums/AdType.md) | `_adType` | Тип рекламного креатива
 [LoadErrorType](../../enums/LoadErrorType.md) | `_error` | Тип ошибки
-`string` | `_id` | Идентификатор реквеста, который не удалось загрузить
 `string` | `_errorMessage` | Информация об ошибке

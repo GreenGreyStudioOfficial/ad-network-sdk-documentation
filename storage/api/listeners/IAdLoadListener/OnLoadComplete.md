@@ -5,8 +5,8 @@
 
 ## Объявление:
 
-`public void OnLoadComplete(string _id);`
+`void OnLoadComplete(AdType _adType)`
 
 тип | имя | описание
 -|-|-
-`string` | `_id` | Индетификатор загруженного рекламного объявления
+[AdType](../enums/AdType.md) | `_adType` | Тип рекламного креатива

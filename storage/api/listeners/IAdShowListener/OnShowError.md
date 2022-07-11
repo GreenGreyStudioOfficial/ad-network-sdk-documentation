@@ -5,10 +5,10 @@
 
 ## Объявление:
 
-`public void OnShowError(string _id, ShowErrorType _error, string _errorMessage);`
+`void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)`
 
 тип | имя | описание
 -|-|-
-`string` | `_id` | Индетификатор показываемого рекламного объявления
+[AdType](../../enums/AdType.md) | `_adType` | Тип рекламного креатива
 [ShowErrorType](../../enums/ShowErrorType.md) | `_error` | Тип ошибки
 `string` | `_errorMessage` | Информация об ошибке
