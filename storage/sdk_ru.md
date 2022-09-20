@@ -584,7 +584,7 @@ public static void Show(AdType _adType, IAdShowListener _listener, string _place
 
 `string _placementId` - плейсмент рекламного объявления.
 
-# Слушатели <a name = "listener"></a>
+# Слушатели <a name = "listeners"></a>
 
 Слушатели (или **listeners**) - это интерфейсы, которые дают возможность контролировать процессы инициализации, загрузки и показа рекламных объявлений.
 
@@ -614,7 +614,7 @@ public static void Show(AdType _adType, IAdShowListener _listener, string _place
 public void OnInitializationComplete();
 ```
 
-### OnInitializationWarning <a name = "OnInitializationWarning"></a> <a name = "OnInitializationWarning"></a> 
+### OnInitializationWarning <a name = "OnInitializationWarning"></a>
 
 Обработчик некритических ошибок завершения инициализации вызывается, когда инициализация прошла успешно, но есть ошибки в пользовательских коннекторах.
 
@@ -640,7 +640,7 @@ void OnInitializationWarning(InitializationWarningType _warningType, string _war
 |NOT_ALL_CONNECTORS_WAS_INITIALIZED| Ошибка инициализации одного или нескольких коннекторов| 
 |THIRD_PARTY_CONNECTOR_WARNING| Предупреждение со стороны стороннего коннектора|
 
-### OnInitializationError <a name = "OnInitializationError"></a> <a name = "OnInitializationError"></a>
+### OnInitializationError <a name = "OnInitializationError"></a>
 
 Обработчик ошибок завершения инициализации вызывается, когда инициализация прошла с ошибкой.
 
@@ -812,7 +812,7 @@ void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)
 | CONNECTORS_NOT_RECEIVED| Нет валидных коннекторов|
 | NOT_SUPPORTED_AD_TYPE| Неподдерживаемый тип рекламного объявления|
 
-# Модели объектов
+# Модели объектов <a name = "AdNetworkInitParams"></a>  
 
 В рекламной **SDK** представлена одна модель объектов **AdNetworkInitParams**, в которой собраны параметры инициализации рекламной сети **Green Grey**. 
 
