@@ -588,7 +588,7 @@ where:
 
 `string placementId` - advertisement placement.
 
-# Listeners <a name ="listener"></a>
+# Listeners <a name ="listeners"></a>
 
 Listeners are interfaces that allow to take under control processes of initialization, loading and showing of advertisements.
 
@@ -672,7 +672,7 @@ public void OnInitializationError(InitializationErrorType _error, string _errorM
 | INVALID_GAME_ID | Invalid game identifier |
 
 
-## Listener of loading
+## Listener of loading <a name = "l_load"></a>
 
 An interface of the listener of loading **IAdLoadListener** is used to take under control the process of loading.
 
