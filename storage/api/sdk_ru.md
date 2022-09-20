@@ -1,14 +1,460 @@
-# Описание API
-В данном разделе собрана техническая документация классов, интерфейсов, перечислений и тд, доступных пользователям библиотеки.
+[Manual](#manual) | [API](#api)
 
-### Languages
-1. [Russian](#russian)
-2. [English](#english)
+# Принципы работы SDK <a name="manual"></a>
 
+## Оглавление
+- [Инициализация библиотеки](#initialization)
+- [Загрузка рекламных объявлений](#load)
+- [Показ рекламного объявления](#show)
+- [Особенности работы системы кэширования](#cache)
+- [Как подключить библиотеку](#connect_lib)
+- [Как работать с библиотекой - пример](#lib_work)
+- [Как интегрироваться со сторонними SDK](#third_party_SDK)
+- [Принципы работы с коннектором](#connector)
+- [Интеграция](#integration)
+
+
+Данный SDK используется для работы с рекламой двух видов:
+
+• видеорекламой, воспроизводимой в контексте **Unity**;
+• рекламой, отображаемой внутри **web-view**.
+
+Решение о показе какого-либо типа рекламы принимается в зависимости от решений сервера.
+
+| | Отображается внутри editor | Останавливает основной поток приложения| Останавливает основной поток приложения |
+|---|---|---|
+| видеореклама | да | нет |
+| реклама внутри web-view | нет | да |
+
+Работа с другими типами рекламы реализована через работу коннекторов.
+
+В основе работы **SDK** лежит статический класс **AdNetworkSDK**, который:
+
+• инициирует библиотеку;
+• загружает рекламные объявления;
+• показывает рекламные объявления.
+
+Для этого в классе имеются открытые статические методы, вызываемые пользователем. Чтобы реагировать на их выполнение, пользователь **SDK** должен самостоятельно реализовать интерфейсы слушателей, в зависимости от своих нужд. Слушатели оповещаются в фоновом режиме. Пример реализации интерфейса слушателя смотрите [здесь](#lib_work).
+
+Данный **SDK** поддерживает интеграцию с рекламными **SDK** других производителей с помощью коннекторов. Пример реализации коннектора смотрите [здесь](#tjird_party_SDK).
+
+## Инициализация библиотеки <a name="initialization"></a>
+
+На данном этапе **SDK** подготавливается к загрузке и показу рекламных объявлений, а так же к инициализации коннекторов, реализованных пользователем, для взаимодействия со сторонними рекламными **SDK**.
+
+Пример:
+
+```
+using System.Collections.Generic;
+using GreenGrey.AdNetworkSDK;
+using GreenGrey.AdNetworkSDK.DataModel;
+using GreenGrey.AdNetworkSDK.DataModel.Enums;
+using GreenGrey.AdNetworkSDK.Interfaces.Listeners.Initialization;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace GGADSDK.Samples.LoadExample.Scripts
+{
+    public class InitializeExample: MonoBehaviour, IAdInitializationListener
+    {
+        [Tooltip("You game id")]
+        [SerializeField] private string m_myGameID;
+        [Tooltip("Should work in test mode. Dont use true for release buildes")]
+        [SerializeField] private bool m_isTestMode;
+        [Tooltip("Should sdk auto load ads after success initialization")]
+        [SerializeField] private bool m_autoLoadEnabled;
+        [Tooltip("Which types can be loaded automatically")]
+        [SerializeField] private List<AdType> m_adTypesForAutoLoad;
+        [Tooltip("Init button")]
+        [SerializeField] private Button m_initButton;
+
+        private void Start()
+        {
+            m_initButton.onClick.AddListener(InitButtonAction);
+        }
+        
+        private void InitButtonAction()
+        {
+            Debug.Log("Initialisation started");
+            AdNetworkSDK.Initialize(
+                new AdNetworkInitParams(
+                    m_myGameID,
+                    m_isTestMode,
+                    m_autoLoadEnabled,
+                    m_adTypesForAutoLoad),
+                this);
+        }
+
+        public void OnInitializationComplete()
+        {
+            Debug.Log("Initialization: SUCCESS!");
+            Debug.Log("Now you can load ads");
+        }
+
+        public void OnInitializationError(InitializationErrorType _error, string _errorMessage)
+        {
+            Debug.LogError($"Initialization failed with error [{_error}]: {_errorMessage}");
+        }
+
+        public void OnInitializationWarning(InitializationWarningType _warningType, string _warningMessage)
+        {
+            Debug.Log($"Warning: {_warningType.ToString()}. {_warningMessage}");
+            Debug.Log("Now you can load ads");
+        }
+    }
+}
+```
+
+## Загрузка рекламных объявлений <a name="load"></a>
+
+На данном этапе библиотека просит сервис подобрать и скачать подходящую рекламу для данного пользователя. Если рекламный сервис не смог найти рекламу, то он пытается выполнить загрузку через коннекторы пользователя, если они имеются. После того, как успешный ответ получен, рекламное объявление загружается в кэш.
+
+Пример:
+
+```
+using GreenGrey.AdNetworkSDK;
+using GreenGrey.AdNetworkSDK.DataModel.Enums;
+using GreenGrey.AdNetworkSDK.Interfaces.Listeners.Load;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace GGADSDK.Samples.LoadExample.Scripts
+{
+    public class LoadExample: MonoBehaviour, IAdLoadListener
+    {
+        [Tooltip("Load button")]
+        [SerializeField] private Button m_loadButton;
+        [Tooltip("Ad placementId." +
+                 "Required by some ad service, used only for connectors if support" +
+                 "Not need for GreenGrey sdk - can be null or empty.")]
+        [SerializeField] private string m_placementId;
+        private void Start()
+        {
+            m_loadButton.onClick.AddListener(LoadButtonAction);
+        }
+        private void LoadButtonAction()
+        {
+            Debug.Log("Load started");
+            AdNetworkSDK.Load(AdType.REWARDED, this, m_placementId);
+        }
+                public void OnLoadComplete(AdType _adType)
+        {
+            Debug.Log($"Load [{_adType}]: SUCCESS");
+            Debug.Log($"Now you can show {_adType} ad");
+        }
+        
+        public void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)
+        {
+            Debug.LogError($"Load: failed with error [{_error}]: {_errorMessage}");
+        }
+    }
+}
+```
+
+## Показ рекламного объявления <a name="show"></a>
+
+На данном этапе **SDK** показывает пользователю рекламное объявление из кэша. Если загрузка креатива произошла при помощи коннектора, то и показ будет вызван через данный коннектор.
+
+Пример:
+
+```
+using GreenGrey.AdNetworkSDK;
+using GreenGrey.AdNetworkSDK.DataModel.Enums;
+using GreenGrey.AdNetworkSDK.Interfaces.Listeners.Show;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace GGADSDK.Samples.LoadExample.Scripts
+{
+    public class ShowExample: MonoBehaviour, IAdShowListener
+    {
+        [Tooltip("Show button")]
+        [SerializeField] private Button m_showButton;
+        [Tooltip("Which type you want to show")]
+        [SerializeField] private AdType m_adType;
+        
+        private void Start()
+        {
+            m_showButton.onClick.AddListener(ShowButtonAction);
+        }
+        
+        private void ShowButtonAction()
+        {
+            AdNetworkSDK.Show(m_adType, this);
+        }
+        
+        public void OnShowStart(AdType _adType)
+        {
+            Debug.Log($"Show [{_adType}]: Show started");
+        }
+        
+        public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)
+        {
+            Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] complete state\nValidationId: {_validationId}");
+            
+            // If return _adType == AdType.REWARDED
+            // and _showCompletionState == ShowCompletionState.SHOW_COMPLETE_BY_CLOSE_BUTTON
+            // you should give user reward
+        }
+
+        public void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)
+        {
+            Debug.LogError($"Show [{_adType}]: failed with error [{_error}]: {_errorMessage}");
+        }
+    }
+}
+```
+
+### Особенности работы системы кэширования <a name="cache"></a>
+
+Кэширование рекламных объявлений и их очистка происходит автоматически. Пользователь **SDK** не может   влиять на данный процесс.
+
+Очистка кэша может происходить:
+
+• по завершению показа ролика;
+• по истечению срока его актуальности. Срок актуальности объявления регулирует рекламодатель.
+
+Особенности работы:
+
+1. Если произошла очистка, попытка воспроизведения загруженного в кэш видеоролика выдает ошибку.
+
+2. Если в **AdNetworkInitParams** передается список типов рекламных объявлений для автозагрузки, то **AdNetworkSDK** поддерживает максимально возможное количество рекламных объявлений в кэше приложения. Данный механизм не реализуется для коннекторов.
+
+3. При повторном вызове **Load** с одним и тем же типом рекламного объявления вызывается **callback** слушателя, если данный тип уже закэширован. Загрузка нового рекламного объявления не происходит.
+
+#### Типы рекламных объявлений
+
+| Тип | Описание |
+|---|---|
+| `INTERSTITIAL` | Видео без вознаграждения|
+| `REWARDED` | Видео с вознаграждением|
+| `BANNER` | Баннер (не реализовано в сервисе, добавлен для работы с коннектором) |
+| `MREC` | MREC (не реализовано в сервисе, добавлен для работы с коннектором)|
+
+# Как подключить библиотеку <a name="connect_lib"></a>
+
+Библиотека распространяется как пакет для **Package Manager**.
+
+Для работы с библиотекой необходим **GAME_ID** - идентификатор приложения в системе показа рекламы.
+Напишите на [a.bobkov@mobidriven.com](a.bobkov@mobidriven.com), чтобы получить идентификатор.
+
+Ссылка на проект в git [https://github.com/GreenGreyStudioOfficial/AdNetworkSDK_release](https://github.com/GreenGreyStudioOfficial/AdNetworkSDK_release)
+
+Чтобы подключить библиотеку к проекту:
+
+1. В панели **Package Manager** выберите **Add package from git URL**:
+
+![integration_0.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_0.png")
+
+2. В открывшемся окне введите ссылку
+
+[https://github.com/GreenGreyStudioOfficial/AdNetworkSDK_release.git#v_N](https://github.com/GreenGreyStudioOfficial/AdNetworkSDK_release.git#v_N)
+
+где **N** - текущая версия библиотеки.
+
+3. Для загрузки примера использования в панели **Package Manager** выберите **AdNetworkSDK**, в правой части разверните список примеров и нажмите кнопку **Import**.
+
+![integratiom_1.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_1.png")
+
+После этого рядом с успешно импортированными примерами появится галочка, а сами файлы примеров окажутся в структуре проекта.
+
+![integration_2.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_2.png")
+
+![integration_3.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_3.png")
+
+4. Для запуска примера необходимо прописать полученный идентификатор **GAME_ID** в соответствующем поле редактора:
+
+![integration_4.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_4.png")
+
+# Как работать с библиотекой - пример <a name="lib_work"></a>
+
+Пример кода с объяснениями, который иллюстрирует максимально быстрый в разработке способ показать рекламу.
+
+Создается один компонент **MonoBehaviour**, который при этом реализует все 3 интерфейса слушателей: инициации, загрузки и показа.
+
+Соответствующие функции класса **AdNetworkSDK** вызываются при нажатии кнопок на сцене.
+Для загрузки используется функция **Load**, которая загружает рекламное объявление из сети или из кэша, если загрузка была проведена ранее.
+
+Данный код можно протестировать на сцене **LoadExampleScene**, поставляющейся в пакете вместе с **SDK**.
+
+```
+public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAdLoadListener, IAdShowListener  
+{  
+    [SerializeField] private string m_myGameID;  
+    [SerializeField] private Button m_initButton;  
+    [SerializeField] private Button m_loadButton;  
+    [SerializeField] private Button m_showButton;  
+  
+    //Last loaded adType  
+    private AdType m_adType;
+	
+    #region MonoBehaviour  
+  
+    private void Start()  
+    {
+        m_initButton.onClick.AddListener(InitButtonAction);  
+        m_loadButton.onClick.AddListener(LoadButtonAction);  
+        m_showButton.onClick.AddListener(ShowButtonAction);  
+        m_loadButton.interactable = false;  
+        m_showButton.interactable = false;  
+    }
+	
+    private void InitButtonAction()  
+    {        
+        Debug.Log("Initialisation started");  
+        AdNetworkSDK.Initialize(  
+            new AdNetworkInitParams(  
+                m_myGameID,  
+                true,  
+                true,  
+                new List<AdType>()), this);  
+    }
+	
+    private void LoadButtonAction()  
+    {        
+        Debug.Log("Load started");  
+        m_showButton.interactable = false;  
+        AdNetworkSDK.Load(AdType.REWARDED, this, null);  
+    }
+	
+    private void ShowButtonAction()  
+    {        
+        Debug.Log($"Start showing with type: [{m_adType}]");  
+        AdNetworkSDK.Show(m_adType, this);  
+    } 
+	
+    #endregion  
+  
+    #region IAdInitializationListener  
+  
+    public void OnInitializationComplete()  
+    {        
+        Debug.Log("Initialization: SUCCESS!");  
+        m_loadButton.interactable = true;  
+    }  
+    
+    public void OnInitializationError(InitializationErrorType _error, string _errorMessage)  
+    {        
+        Debug.LogError($"Initialization failed with error [{_error}]:{_errorMessage}");  
+    }  
+    
+    public void OnInitializationWarning(InitializationWarningType _warningType, string _warningMessage)  
+    {        
+        Debug.Log($"Warning: {_warningType.ToString()}. {_warningMessage}");  
+    }  
+    #endregion  
+  
+    #region IAdLoadListener  
+  
+    public void OnLoadComplete(AdType _adType)  
+    {        
+        m_adType = _adType;  
+        m_showButton.interactable = true;  
+        Debug.Log($"LazyLoad [{m_adType}]: SUCCESS");  
+    }    
+	
+    public void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)  
+    {        
+        Debug.LogError($"LazyLoad: failed with error [{_error}]: {_errorMessage}");  
+    } 
+	
+    #endregion  
+  
+    #region IAdShowListener  
+      
+    public void OnShowStart(AdType _adType)  
+    {        
+        Debug.Log($"Show [{_adType}]: Show started");  
+        m_showButton.interactable = false;  
+    }  
+    
+    public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)  
+    {        
+        Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] complete state\nValidationId: {_validationId}");  
+    }  
+    
+    public void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)  
+    {        
+        Debug.LogError($"Show [{_adType}]: failed with error [{_error}]: {_errorMessage}");  
+    }    
+	
+    #endregion  
+}
+```
+
+# Как интегрироваться с сторонними рекламными SDK <a name="third_party_SDK"></a>
+
+Для удобства пользователя есть интеграция со сторонними рекламными **SDK**. Интеграция позволяет пользователю использовать несколько рекламных **SDK** на любом этапе работы с проектом.
+
+На данный момент библиотека поддерживает работу с двумя типами рекламы: видеорекламой, воспроизводимой в контексте **Unity**, и рекламой, отображаемой внутри **web-view**. Для работы с остальными типами рекламы необходимо использовать коннекторы.
+
+Коннектор - это механизм, используемый для интеграции со сторонними рекламными **SDK**.
+
+## Принципы работы коннектора <a name="connector"></a>
+
+1. Коннекторы передаются в функцию **Initialize** при инициализации рекламного **SDK**.
+2. Во время инициализации рекламного **SDK**, происходит инициализация всех коннекторов. Если какой-то коннектор не прошел инициализацию, выдается предупреждение. Если инициализация рекламного **SDK** не прошла - выдается сообщение об ошибке.
+3. Идентификаторы коннекторов передаются на сервер для составления списка приоритетов. 
+4. Сервер по порядку опрашивает рекламные **SDK**.
+5. Функция **Load** вызывается по порядку по всем коннекторам для загрузки рекламного объявления.
+6. Функция **Show** показывает рекламное объявление коннектора, который первым загрузил рекламу.
+
+## Интеграция <a name="integration"></a>
+
+Описание интерфейса коннектора для интеграции со сторонним рекламным **SDK**:
+
+```
+public interface ISdkConnector
+{
+    bool isInitialized { get; }
+
+    bool isInitializeStarted { get; }
+
+    void Initialize(IAdInitializationListener _listener);
+
+    void Load(AdType _adType, IAdLoadListener _listener, string _placementId = null);
+
+    void Show(AdType _adType, IAdShowListener _listener, string _placementId = null);
+
+    List<AdType> GetSupportedAdTypes();
+
+    string GetSdkId();
+}
+```
+
+| Функция | Описание |
+|---|---|
+| `isInitialized` | Свойство "закончена ли инициализация самого **SDK**" |
+| `isInitializeStarted` | Свойство "начата ли инициализация самого **SDK**" |
+| `Initialize(IAdInitializationListener _listener)` | Инициализация коннектора. В качестве аргумента указывается слушатель
+| `Load(AdType _adType, IAdLoadListener _listener, string _placementId = null)` | Загрузка рекламы коннектором. В качестве аргументов указывается тип рекламы, слушатель загрузки и **placementId** - если есть|
+| `Show(AdType _adType, IAdShowListener _listener, string _placementId = null)` | Показ рекламы. А качестве аргументов указывается тип рекламы, слушатель показа и **placementId** - если есть |
+| `GetSupportedAdTypes` | Типы рекламы, поддерживаемые сторонним рекламным **SDK** |
+| `GetSdkId` | Идентификатор стороннего рекламного **SDK**. Используется для подключения **SDK** через администраторов **GreenGrey Studio**|
+****
+При подключении библиотеки загружается пример реализации коннектора **Applovin**.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br/><br/>
+<br/><br/>
 _____
-### Russian
-_____
-<a name="russian"></a>
+# API <a name="api"></a>
+
 # Статичный класс AdNetworkSDK
 Статичный класс **AdNetworkSDK** - публичный интерфейс для взаимодействия с **SDK**.
 
@@ -20,17 +466,17 @@ _____
 
 ## Содержание
 
-- [Метод Initialize](#ru_initialize)
-- [Метод Load](#ru_load)
-- [Метод Show](#ru_show)
-- [Слушатели](#ru_listeners)
-- [Слушатель инициализации](#ru_l_initialization)
-- [Слушатель загрузки](#ru_l_load)
-- [Слушатель показа](#ru_l_show)
-- [Модель объекта AdNetworkInitParams](#ru__AdNetworkInitParams)
-- [Коннекторы ISdkConnector](#ru_ISdkConnector)
+- [Метод Initialize](#initialize)
+- [Метод Load](#load)
+- [Метод Show](#show)
+- [Слушатели](#listeners)
+- [Слушатель инициализации](#l_initialization)
+- [Слушатель загрузки](#l_load)
+- [Слушатель показа](#l_show)
+- [Модель объекта AdNetworkInitParams](#AdNetworkInitParams)
+- [Коннекторы ISdkConnector](#ISdkConnector)
 
-## Метод Initialize <a name = "ru_initialize"></a>
+## Метод Initialize <a name = "initialize"></a>
 
 Метод **Initialize** инициализирует работу **SDK**.
 
@@ -73,7 +519,7 @@ public static void Initialize(AdNetworkInitParams _adNetworkInitParams, IAdIniti
 |[IAdInitializationListener](#IAdInitializationListener)| listener| Реализация слушателя инициализации|
 | [ISdkConnector[]](#ISdkConnector) | otherConnectors | Массив реализаций коннекторов со сторонними **SDK**|
 
-## Метод Load <a name = "ru_load"></a>
+## Метод Load <a name = "load"></a>
 
 Метод **Load** загружает доступное рекламное объявление из сети или из кеша.
 
@@ -105,7 +551,7 @@ public static void Load(AdType _adType, IAdLoadListener _listener, string _place
 
 `string _placementId` - плейсмент рекламного объявления.
 
-## Метод Show <a name = "ru_show"></a>
+## Метод Show <a name = "show"></a>
 
 Показывает загруженное рекламное объявление.
 
@@ -138,7 +584,7 @@ public static void Show(AdType _adType, IAdShowListener _listener, string _place
 
 `string _placementId` - плейсмент рекламного объявления.
 
-# Слушатели <a name = "ru_listener"></a>
+# Слушатели <a name = "listener"></a>
 
 Слушатели (или **listeners**) - это интерфейсы, которые дают возможность контролировать процессы инициализации, загрузки и показа рекламных объявлений.
 
@@ -148,7 +594,7 @@ public static void Show(AdType _adType, IAdShowListener _listener, string _place
 • [Слушатель загрузки IAdLoadListener](#l_load);
 • [Слушатель показа IAdShowListener](#l_show).
 
-## Слушатель инициализации <a name = "ru_l_initialization"></a>
+## Слушатель инициализации <a name = "l_initialization"></a>
 
 Интерфейс слушателя инициализации **SDK** **IAdInitializationListener** используется для контроля выполнения процесса инициализации.
 
@@ -158,7 +604,7 @@ public static void Show(AdType _adType, IAdShowListener _listener, string _place
 • [OnInitializationError](#OnInitializationError): обработчик ошибок инициализации;
 • [OnInitializationWarning](#OnInitializationWarning): обработчик некритических ошибок инициализации.
 
-### OnInitializationComplete <a name = "ru_OnInitializationComplete"></a>
+### OnInitializationComplete <a name = "OnInitializationComplete"></a>
 
 Обработчик завершения инициализации вызывается, когда инициализация прошла успешно.
 
@@ -168,7 +614,7 @@ public static void Show(AdType _adType, IAdShowListener _listener, string _place
 public void OnInitializationComplete();
 ```
 
-### OnInitializationWarning <a name = "ru_OnInitializationWarning"></a>
+### OnInitializationWarning <a name = "OnInitializationWarning"></a> <a name = "OnInitializationWarning"></a> 
 
 Обработчик некритических ошибок завершения инициализации вызывается, когда инициализация прошла успешно, но есть ошибки в пользовательских коннекторах.
 
@@ -194,7 +640,7 @@ void OnInitializationWarning(InitializationWarningType _warningType, string _war
 |NOT_ALL_CONNECTORS_WAS_INITIALIZED| Ошибка инициализации одного или нескольких коннекторов| 
 |THIRD_PARTY_CONNECTOR_WARNING| Предупреждение со стороны стороннего коннектора|
 
-### OnInitializationError <a name = "ru_OnInitializationError"></a> 
+### OnInitializationError <a name = "OnInitializationError"></a> <a name = "OnInitializationError"></a>
 
 Обработчик ошибок завершения инициализации вызывается, когда инициализация прошла с ошибкой.
 
@@ -221,7 +667,7 @@ public void OnInitializationError(InitializationErrorType _error, string _errorM
 | THIRD_PARTY_CONNECTOR_ERROR| Ошибка в пользовательском коннекторе| 
 | INVALID_GAME_ID| Недействительный идентификатор игры|
 
-## Слушатель загрузки <a name = "ru_l_load"></a>
+## Слушатель загрузки <a name = "l_load"></a>
 
 Интерфейс слушателя загрузки **IAdLoadListener** используется для контроля выполнения процесса загрузки.
 
@@ -230,7 +676,7 @@ public void OnInitializationError(InitializationErrorType _error, string _errorM
 • [OnLoadComplete](#OnLoadComplete) - обработчик завершения загрузки;
 • [OnLoadError](#OnLoadError) - обработчик ошибок загрузки рекламных объявлений.
 
-### OnLoadComplete <a name = "ru_OnLoadComplete"></a> 
+### OnLoadComplete <a name = "OnLoadComplete"></a> 
 
 Обработчик завершения загрузки вызывается, когда загрузка прошла успешно.
 
@@ -246,7 +692,7 @@ void OnLoadComplete(AdType _adType)
 |---|---|---|
 | AdType| AdType| Тип рекламного объявления (см. [AdType](#adtype))|
 
-### OnLoadError <a name = "ru_OnLoadError"></a> 
+### OnLoadError <a name = "OnLoadError"></a> 
 
 Обработчик ошибок загрузки вызывается, когда загрузка прошла с ошибкой.
 
@@ -284,7 +730,7 @@ void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)
 | WEBVIEW_CONTENT_NOT_LOADED| Ошибка загрузки WebView|
 
 
-## Слушатель показа <a name = "ru_l_show"></a>
+## Слушатель показа <a name = "l_show"></a>
 
 Интерфейс слушателя показа рекламного объявления **IAdShowListener** используется для контроля выполнения процесса показа.
 
@@ -294,7 +740,7 @@ void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)
 • [OnShowComplete](#OnShowComplete) - обработчик завершения показа объявления;
 • [OnShowError](#OnShowError) - обработчик ошибок показа рекламного объявления.
 
-### OnShowStart <a name = "ru_OnShowStart"></a> 
+### OnShowStart <a name = "OnShowStart"></a> 
 
 Обработчик начала показа рекламного объявления вызывается перед началом показа.
 
@@ -310,7 +756,7 @@ void OnShowStart(AdType _adType)
 |---|---|---|
 |AdType | AdType | Тип рекламного объявления(см. [AdType)](#adtype)|
 
-### OnShowComplete <a name = "ru_OnShowComplete"></a> 
+### OnShowComplete <a name = "OnShowComplete"></a> 
 
 Обработчик завершения пока рекламного объявления вызывается, когда показ прошел успешно.
 
@@ -335,7 +781,7 @@ void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, st
 |SHOW_COMPLETE_BY_CLOSE_BUTTON| Завершение показа по кнопке **Закрыть**|
 | SHOW_COMPLETE_BY_SKIP_BUTTON| Завершение показа по кнопке **Пропустить**|
 
-### OnShowError <a name = "ru_OnShowError"></a>  
+### OnShowError <a name = "OnShowError"></a>  
 
 Обработчик ошибок показа рекламного объявления вызывается, когда показ прошел с ошибкой.
 
@@ -366,8 +812,7 @@ void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)
 | CONNECTORS_NOT_RECEIVED| Нет валидных коннекторов|
 | NOT_SUPPORTED_AD_TYPE| Неподдерживаемый тип рекламного объявления|
 
-
-# Модели объектов <a name = "ru__AdNetworkInitParams"></a>
+# Модели объектов
 
 В рекламной **SDK** представлена одна модель объектов **AdNetworkInitParams**, в которой собраны параметры инициализации рекламной сети **Green Grey**. 
 
@@ -386,7 +831,7 @@ public AdNetworkInitParams(string _gameId, bool _isTestMode, bool _autoLoadEnabl
 | bool | autoLoadEnabled | Разрешена ли автоматическая загрузка рекламных объявлений после инициализации|
 | List AdType | adTypesForAutoLoad| Список AdType для автоматической загрузки|
 
-# Коннекторы <a name = "ru_ISdkConnector"></a>
+# Коннекторы <a name = "ISdkConnector"></a>
 
 Интерфейс коннектора сторонних рекламных **SDK** **ISdkConnector** позволяет управлять всеми рекламными **SDK**, интегрированными в приложение через **AdNetworkSDK**.
 
@@ -422,7 +867,7 @@ void Load(AdType _adType, IAdLoadListener _listener, string _placementId = null)
 
 где:
 
-`AdType _adType` - тип рекламного объявления:  <a name = "ru_adtype"></a>
+`AdType _adType` - тип рекламного объявления:  <a name = "adtype"></a>
 
 | Значение| Описание| 
 |---|---|
@@ -473,482 +918,3 @@ string GetSdkId()
 
 
 
-
-
-
-
-
-
-
-
-
-
- 
- 
- 
-<br/><br/>
-<br/><br/>
-<br/><br/>
-<br/><br/>
-_____
-<a name="english"></a>
-### English
-_____
-
-# Static class AdNetworkSDK
-
-Static class **AdNetworkSDK**  is a public interface for cooperation with **SDK**.
-
-It contains the following public methods:
-
-• [Initialize](): initialization of **SDK** work;
-• [Load](): loading of available advertisements from network and chache;
-• [Show](): show of loaded advertisement.
-
-## Contents
-- [The method Initialize](#en_initialize)
-- [The method Load](#en_load)
-- [The method Show](#en_show)
-- [Listeners](#en_listeners)
-- [Listener of initialization](#en_l_initialization)
-- [Listener of loading](#en_l_load)
-- [Listener of show](#en_l_show)
-- [Object model AdNetworkInitParams](#en_AdNetworkInitParams)
-- [Connectors ISdkConnector](#en_ISdkConnector)
-
-## The method Initialize <a name ="en_initialize"></a>
-
-The method Initialize initializes **SDK** work.
-
-Parameters of initialization **SDK** [AdNetworkInitParams](#AdNetworkInitParams), implementation of the listener [IAdInitializationListener]() and an array of connectors implemented the interface [ISDKConnector](#SdkConnector) for cooperation with third-party **SDK** are sent to the method.
-
-The methods [AdNetworkSDK.Load]() and [AdNetworkSDK.Show]() do not work correctly without initialization. So the errors [LoadErrorType.NOT_INITIALIZED_ERROR]() and [ShowErrorType.NOT_INITIALIZED_ERROR]() will be sent to the listeners.
-
-If the initialization is run but not completed yet, the methods [AdNetworkSDK.Load]() and [AdNetworkSDK.Show]() do not work correctly. So the errors [LoadErrorType.INITIALIZATION_NOT_FINISHED]() and [ShowErrorType.INITIALIZATION_NOT_FINISHED]() will be sent to the listeners.
-
-If **SDK** is initialized successfully, the repeated initialization calls callback of its listener [IAdInitializationListener.OnInitializationError](#OnInitializationError) with the error **InitializationErrorType.SDK_ALREADY_INITIALIZED**.
-
-If **SDK** is initializing, the repeated initialization calls callback of its listener [AdInitializationListener.OnInitializationError](#OnInitializationError) with the error **InitializationErrorType.INITIALIZE_PROCESS_ALREADY_STARTED**.
-
-If incorrect **GAME_ID** (null, "", invalid) is sent to [AdNetworkInitParams](#AdNetworkInitParams) while initializing, **callback** of the listener [IAdInitializationListener.OnInitializationError](#OnInitializationError) with the error **InitializationErrorType.GGAD_CONNECTOR_INITIALIZE_FAILED** will be called.
-
-If there are arguments of [ISDKConnector[]](#ISdkConnector), the process of initialization will be the following: first, the initialization  **AdNetworkSDK** will be called. Only of the initialization completes successfully, the initialization of connectors sent as arguments will be called.
-
-If thew initialization of all connectors completes successfully, the **callback** [IAdInitializationListener.OnInitializationComplete](#OnInitializationComplete) will be called.
-
-If the initialization of at least one connector fails, the **callback** [IAdInitializationListener.OnInitializationComplete](#OnInitializationComplete) and
-[IAdInitializationListener.OnInitializationWarning](#OnInitializationWarning) will be called.
-
-If the initialization of all connectors fail, but **AdNetworkSDK** is successfully initialized, the **callback** [IAdInitializationListener.OnInitializationComplete](#OnInitializationComplete) and
-[IAdInitializationListener.OnInitializationWarning](#OnInitializationWarning) will be called.
-
-**Declaration**:
-
-```
-public static void Initialize(AdNetworkInitParams _adNetworkInitParams, IAdInitializationListener _listener, ISdkConnector[] _otherConnectors = null)
-```
-
-where:
-
-|Type |Name| Description|
-|---|---|---|
-|[AdNetworkInitParams](#AdNetworkInitParams)| _adNetworkInitParams| Parameters of initialization of **Green Grey** ad network|
-| [IAdInitializationListener](#IAdInitializationListener) | _listeher_|Implementation of the listener of initialization |
-| [ISdkConnector[]](#ISdkConnector) | otherConnectors | Array of implementation of connectors with third-party **SDK**|
-
-## The method Load <a name = "en_load"></a>
-
-The method loads available advertisement from the network and the cache.
-
-The ad type, the implementation of the listener [IAdLoadListener]() and ad **placementId** are sent to the method. The **placementId** is only used for work with connectors in the current version.
-
-The method runs the process of loading advertisements. When the process competes, the **callback** of the listener with the same ad type will be called.
-
-The method saves advertisement data in cache. The cache is cleaned as soon as the advertisement is shown or after the expiration date of the ad.
-
-There is a limit of number of loading that is managed with a server and updated for each loading. The limit for each ad type is counted personally. If a list of ad types is sent to [AdNetworkInitParams](#AdNetworkInitParams) for automatic loading,  **AdNetworkSDK** will support the maximum number of ads in the application cache (**AdNetworkSDK** does not implement the same algorithm for connectors).
-
-If there is at least one connector, the algorithm will be the following:
-
-1. If the ad type is supported with the server, the server tries to load it.
-2. If error, **AdNetworkSDK** calls next connector in the list.
-3. When connectors complete their work the **callback** of the listener with the same ad type will be called.
-
-**Declaration**:
-
-```
-public static void Load(AdType _adType, IAdLoadListener _listener, string _placementId)
-```
-
-where:
-
-`AdType` - advertisement type (see [AdType]());
-
-`IAdLoadListener` - implementation of listener of loading (see [IAdLoadListener]());
-
-`string placementId` - advertisement placement.
-
-## The method Show <a name = "en_show"></a>
-
-It shows loaded advertisement.
-
-The ad type, implementation of the listener [IAdShowListener] and advertisement **placementId** are sent to the method. The **placementId** is used only for cooperation with connectors in the current version.
-
-The method runs the process of ad show.
-
-The **callback** [IAdShowListener.OnShowStart](#OnShowStart) is called before show.
-
-The **callback** [IAdShowListener.OnShowComplete](#OnShowComplete) is called if the show completes successfully, The **callback** informs the system about completing status.
-
-This is important for ad type **AdType.REWARDED** for example. Because a user receives award only if the advertisement show completes (**ShowCompletionState.SHOW_COMPLETE_BY_CLOSE_BUTTON**), not skips (**ShowCompletionState.SHOW_COMPLETE_BY_SKIP_BUTTON**).
-
-When the show fails, the **callback** [IAdShowListener.OnShowError](#OnShowError) will be called.
-For example, when ad cache expired before call, the error **ShowErrorType.VIDEO_WAS_DELETED** will be sent to the method.
-
-The cache is cleaned every time the show completes successfully or fails.
-
-**Declaration**:
-
-```
-public static void Show(AdType _adType, IAdShowListener _listener, string _placementId = null)
-```
-
-where:
-
-`AdType` - advertisement type (see [AdType]());
-
-`IAdShowListener` - implementation of listener of show (see [IAdShowListener]());
-
-`string placementId` - advertisement placement.
-
-# Listeners <a name ="en_listener"></a>
-
-Listeners are interfaces that allow to take under control processes of initialization, loading and showing of advertisements.
-
-There are three types of listeners in the system:
-
-• [Listener of initialization IAdInitializationListener](#l_initialization);
-• [Listener of loading IAdLoadListener](#l_load);
-• [Listener of show IAdShowListener](#l_show).
-
-## Listener of initialization <a name = "en_l_initialization"></a>
-
-An interface of the listener of initialization **SDK** **IAdInitializationListener** is used to take under control the process of initialization.
-
-It uses the following public methods:
-
-• [OnInitializationComplete](#OnInitializationComplete): initialization completion handler;
-• [OnInitializationError](#OnInitializationError): initialization error handler;
-• [OnInitializationWarning](#OnInitializationWarning): initialization non-critical error handler.
-
-### OnInitializationComplete <a name = "en_OnInitializationComplete"></a>
-
-Initialization completion handler is called when the initialization is completed successfully.
-
-**Declaration**:
-
-```
-public void OnInitializationComplete();
-```
-
-### OnInitializationWarning <a name = "en_OnInitializationWarning"></a>
-
-Initialization non-critical error handler is called when the initialization is completed successfully but there are errors with user's connectors.
-
-**Declaration**:
-
-```
-void OnInitializationWarning(InitializationWarningType _warningType, string _warningMessage)
-```
-
-where:
-
-| Type | Name | Description |
-|---|---|---|
-| InitializationWarningType | warningType | Warning type |
-| string | warningMessage | Warning information |
-
-**Warning variants**:
-
-| Value | Description |
-|---|---|
-| UNKNOWN | Unknown warning|
-|NOT_ALL_CONNECTORS_WAS_INITIALIZED | An initialization error of one or several connectors|
-| THIRD_PARTY_CONNECTOR_WARNING | Warning from third-party connectors |
-
-
-### OnInitializationError <a name = "en_OnInitializationError"></a>
-
-Initialization error handler is called when initialization is failed.
-
-**Declaration**:
-
-```
-public void OnInitializationError(InitializationErrorType _error, string _errorMessage);
-```
-
-| Type | Name | Description |
-|---|---|---|
-| InitializationErrorType | error | Error type |
-| string | errorMessage | Error information |
-
-**Error variants**:
-
-| Value | Description |
-|---|---|
-| UNKNOWN | Unknown error |
-| GAME_ID_IS_NULL_OR_EMPTY | Empty game identifier is specified |
-| SDK_ALREADY_INITIALIZED | Initialization has already been done |
-| INITIALIZE_PROCESS_ALREADY_STARTED | Initialization has already been started |
-| GGAD_CONNECTOR_INITIALIZE_FAILED | Initialization of connectors fails |
-| THIRD_PARTY_CONNECTOR_ERROR | Error with user's connector |
-| INVALID_GAME_ID | Invalid game identifier |
-
-
-## Listener of loading
-
-An interface of the listener of loading **IAdLoadListener** is used to take under control the process of loading.
-
-It uses the following public methods:
-
-• [OnLoadComplete](#OnLoadComplete) - loading completion handler;
-• [OnLoadError](#OnLoadError) - loading error handler.
-
-### OnLoadComplete <a name ="en_OnLoadComplete"></a>
-
-Loading completion handler is called when loading is completed successfully.
-
-**Declaration**:
-
-```
-void OnLoadComplete(AdType _adType) 
-
-````
-
-where: 
-
-| Type | Name | Description |
-|---|---|---|
-| AdType | AdType | Advertisement type (see [AdType](#adtype)) |
-
-
-### OnLoadError <a name = "en_OnLoadError"></a>
-
-Loading error handler is called when loading is failed.
-
-**Declaration**:
-
-```
-void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)
-```
-
-where: 
-
-| Type | Name | Description | 
-|---|---|---|
-| AdType | AdType | Advertisement type (see [AdType](#adtype))|
-| LoadErrorType | error | Error type |
-| string  | errorMessage | Error message |
-
-**Error types**:
-
-| Value | Description |
-|---|---|
-| UNKNOWN | Unknown error |
-| CONNECTION_ERROR | Connection error |
-| DATA_PROCESSING_ERROR | Data processing error |
-| PROTOCOL_ERROR | Protocol error |
-| NOT_INITIALIZED_ERROR | Lack of initialization |
-| INITIALIZATION_NOT_FINISHED | Initialization is not completed |
-| TO_MANY_VIDEOS_LOADED | The upload limit for this video type has been exceeded |
-| AVAILABLE_VIDEO_NOT_FOUND | The advertising service did not find the corresponding video |
-| NO_CONTENT | No content |
-| NOT_SUPPORTED_AD_TYPE | Current type is not supported with the connector |
-| THIRD_PARTY_CONNECTOR_ERROR | Error with user's connector |
-| REQUEST_NOT_CREATED | Request creation error |
-| NO_CONNECTORS_RECEIVED | No valid connectors |
-| WEBVIEW_CONTENT_NOT_LOADED | WebView loading error |
-
-## Listener of show <a name = "en_l_show"></a>
-
-An interface of the listener of show **IAdShowListener** is used to take under control the process of show.
-
-It uses the following public methods:
-
-• [OnShowStart](#OnShowStart) - handler of beginning the ad show;
-• [OnShowComplete](#OnShowComplete) - handler of completing the ad show;
-• [OnShowError](#OnShowError) - show error handler.
-
-### OnShowStart  <a name = "en_OnShowStart"></a>
-
-A handle of beginning the ad show is called before the show starts.
-
-**Declaration**:
-
-```
-void OnShowStart(AdType _adType)
-```
-
-where:
-
-|Type|Name|Description|
-|---|---|---|
-|AdType | AdType | Advertisement type (see [AdType](#adtype))
-
-### OnShowComplete <a name = "en_OnShowComplete"></a>
-
-The handler of completing the ad show is call after the show finished.
-
-**Declaration**:
-
-```
-void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)
-```
-
-where:
-
-|Type|Name|Description|
-|---|---|---|
-|AdType | AdType | Advertisement type (see [AdType](#adtype))
-|ShowCompletionState | ShowCompletionState | Status of completing the ad show|
-|string | validationId| Identifier of demonstrated  advertisement for server validation|
-
-**Status variants**:
-
-| Value| Description|
-|---|---|
-|SHOW_COMPLETE_BY_CLOSE_BUTTON| Show completes with the button **Close**|
-|SHOW_COMPLETE_BY_SKIP_BUTTON| Show completes with the button **Skip**|
-
-### OnShowError  <a name = "en_OnShowError"></a>
-
-The show error handler is called when the show fails.
-
-**Declaration**:
-
-```
-void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)
-```
-
-where:
-
-| Type| Name| Description|
-|---|---|---|
-| AdType | AdType | Advertisement type (see [AdType](#adtype))|
-| ShowErrorType | error| Error type|
-|string | errorMessage| Identifier of demonstrated  advertisement for server validation|
-
-**Error variants**:
-
-| Value| Description| 
-|---|---|
-|UNKNOWN| Unknown error|
-|NOT_INITIALIZED_ERROR| No initialization|
-|INITIALIZATION_NOT_FINISHED| Initialization process is not completed|
-|VIDEO_PLAYER_ERROR| Player error|
-|NO_LOADED_CONTENT| No loaded content|
-|THIRD_PARTY_CONNECTOR_ERROR| Error with user's connector|
-|CONNECTORS_NOT_RECEIVED| No valid connectors|
-|NOT_SUPPORTED_AD_TYPE| Advertisement type is not supported|
-
-# Object models <a name = "en_AdNetworkInitParams"></a>
-
-There is one object model **AdNetworkInitParams** in the advertisement **SDK**, where parameters of initialization of **Green Grey** ad network are collected. 
-
-**Constuctor**:
-
-```
-public AdNetworkInitParams(string _gameId, bool _isTestMode, bool _autoLoadEnabled, List<AdType> _adTypesForAutoLoad)
-```
-
-**Attributes**:
-
-| Type| Name| Description|
-|---|---|---|
-|string | | gameId | Application identifier|
-|bool | isTestMode| Test mode flag|
-| bool | autoLoadEnabled| If automatic loading of advertisements is allowed after initialization|
-|List AdType| adTypesForAutoLoad| A list AdType for automatic loading|
-
-# Connectors <a name = "en_ISdkConnector"></a>
-
-An interface of connectors of third-party advertisement **SDK** **ISdkConnector** allows to manage all advertisement **SDK** that are integrated into the application via **AdNetworkSDK**.
-
-It uses the following public methods:
-
-| Method | Description |
-|---|---|
-|Initialize| Initialization of a connector|
-|Load| Loading of advertisements|
-|Show| Show of advertisement|
-|GetSupportedAdTypes| Receiving a list of supported ad types|
-|GetSdkId| Receiving of identifier|
-
-**Initialize** is a method that initializes connector work. Its implementation depends on a user. **Callback** must be returned when it is finished.
-
-**Declaration**:
-
-```
-void Initialize(IAdInitializationListener _listener)
-```
-
-where:
-
-**IAdInitializationListener** is a listener of initialization (see [IAdInitializationListener](#IAdInitializationListener))
-
-**Load** is a method that loads advertisements. Its implementation depends on a user. **Callback** must be returned when it is finished.
-
-**Declaration**:
-
-```
-void Load(AdType _adType, IAdLoadListener _listener, string _placementId = null)
-```
-
-where:
-
-**AdType** is an ad type:  <a name = "en_adtype"></a>
-
-|Type| Description|
-|---|---|---|
-|INTERSTITIAL| Video without donation|
-| REWARDED| Video with donation|
-|BANNER| Banner (not implemented in the service, added to work with the connector)|
-|MREC| MREC (not implemented in the service, added to work with the connector)|
-
-**IAdLoadListener** is a listener of loading (see [IAdLoadListener](#AdLoadListener))
-
-**Show** is a method that shows the advertisement. Its implementation depends on a user. **Callback** must be returned when it is finished.
-
-**Declaration**:
-
-```
-void Show(AdType _adType, IAdShowListener _listener, string _placementId = null)
-```
-
-where:
-
-**AdType**  is an ad type (see [AdType](#adtype))
-
-**IAdShowListener** is an interface of the listener of show an advertisement (see [IAdShowListener](#AdShowListener)). 
-
-**GetSupportedAdTypes** is a method that returns a list of supported ad types. Its implementation depends on a user.
-
-**Declaration**:
-```
-List<AdType> GetSupportedAdTypes()
-```
-
-**GetSdkID** is a method that returns connector identifier. Its implementation depends on a user.
-
-**Declaration**: 
-
-```
-string GetSdkId()
-```
-
-The interface of the connector for third-party advertisement **SDK** has the following public attributes:
-
-| Type| Name| Description|
-|---|---|---|
-|bool| isInitialized| If connector is initialized|
-|bool| isInitializedStarted| If initialization is started|\
