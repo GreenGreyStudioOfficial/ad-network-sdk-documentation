@@ -488,11 +488,11 @@ It contains the following public methods:
 
 The method Initialize initializes **SDK** work.
 
-Parameters of initialization **SDK** [AdNetworkInitParams](#AdNetworkInitParams), implementation of the listener [IAdInitializationListener]() and an array of connectors implemented the interface [ISDKConnector](#SdkConnector) for cooperation with third-party **SDK** are sent to the method.
+Parameters of initialization **SDK** [AdNetworkInitParams](#AdNetworkInitParams), implementation of the listener [IAdInitializationListener](#l_initialization) and an array of connectors implemented the interface [ISDKConnector](#SdkConnector) for cooperation with third-party **SDK** are sent to the method.
 
-The methods [AdNetworkSDK.Load]() and [AdNetworkSDK.Show]() do not work correctly without initialization. So the errors [LoadErrorType.NOT_INITIALIZED_ERROR]() and [ShowErrorType.NOT_INITIALIZED_ERROR]() will be sent to the listeners.
+The methods [AdNetworkSDK.Load](api_load) and [AdNetworkSDK.Show](api_show) do not work correctly without initialization. So the errors [LoadErrorType.NOT_INITIALIZED_ERROR]() and ShowErrorType.**NOT_INITIALIZED_ERROR** will be sent to the listeners.
 
-If the initialization is run but not completed yet, the methods [AdNetworkSDK.Load]() and [AdNetworkSDK.Show]() do not work correctly. So the errors [LoadErrorType.INITIALIZATION_NOT_FINISHED]() and [ShowErrorType.INITIALIZATION_NOT_FINISHED]() will be sent to the listeners.
+If the initialization is run but not completed yet, the methods [AdNetworkSDK.Load](api_load) and [AdNetworkSDK.Show](api_show) do not work correctly. So the errors **LoadErrorType.INITIALIZATION_NOT_FINISHED** and **ShowErrorType.INITIALIZATION_NOT_FINISHED** will be sent to the listeners.
 
 If **SDK** is initialized successfully, the repeated initialization calls callback of its listener [IAdInitializationListener.OnInitializationError](#OnInitializationError) with the error **InitializationErrorType.SDK_ALREADY_INITIALIZED**.
 
@@ -521,14 +521,14 @@ where:
 |Type |Name| Description|
 |---|---|---|
 |[AdNetworkInitParams](#AdNetworkInitParams)| _adNetworkInitParams| Parameters of initialization of **Green Grey** ad network|
-| [IAdInitializationListener](#IAdInitializationListener) | _listeher_|Implementation of the listener of initialization |
+| [IAdInitializationListener](#l_initialization) | _listeher_|Implementation of the listener of initialization |
 | [ISdkConnector[]](#ISdkConnector) | otherConnectors | Array of implementation of connectors with third-party **SDK**|
 
 ## The method Load <a name = "api_load"></a>
 
 The method loads available advertisement from the network and the cache.
 
-The ad type, the implementation of the listener [IAdLoadListener]() and ad **placementId** are sent to the method. The **placementId** is only used for work with connectors in the current version.
+The ad type, the implementation of the listener [IAdLoadListener](l_load) and ad **placementId** are sent to the method. The **placementId** is only used for work with connectors in the current version.
 
 The method runs the process of loading advertisements. When the process competes, the **callback** of the listener with the same ad type will be called.
 
@@ -583,7 +583,7 @@ public static void Show(AdType _adType, IAdShowListener _listener, string _place
 
 where:
 
-`AdType` - advertisement type (see [AdType]());
+`AdType` - advertisement type (see [AdType](#adtype));
 
 `IAdShowListener` - implementation of listener of show (see [IAdShowListener]());
 
@@ -862,7 +862,7 @@ void Initialize(IAdInitializationListener _listener)
 
 where:
 
-**IAdInitializationListener** is a listener of initialization (see [IAdInitializationListener](#IAdInitializationListener))
+**IAdInitializationListener** is a listener of initialization (see [IAdInitializationListener](#l_initialization))
 
 **Load** is a method that loads advertisements. Its implementation depends on a user. **Callback** must be returned when it is finished.
 
