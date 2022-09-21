@@ -483,7 +483,7 @@ _____
 
 На вход передаются параметры инициализации **SDK** [AdNetworkInitParams](#AdNetworkInitParams), реализация слушателя [IAdInitializationListener](#IAdInitializationListener) и массив коннекторов, реализующих интерфейс [ISDKConnector](#ISDKConnector) для взаимодействия со сторонними рекламными **SDK**.
 
-Без инициализации методы [AdNetworkSDK.Load](#api_load) и [AdNetworkSDK.Show](#show) не отработают корректно и будут сообщать своим слушателям об ошибках
+Без инициализации методы [AdNetworkSDK.Load](#api_load) и [AdNetworkSDK.Show](#api_show) не отработают корректно и будут сообщать своим слушателям об ошибках
 **LoadErrorType.NOT_INITIALIZED_ERROR** и **ShowErrorType.NOT_INITIALIZED_ERROR** соответственно.
 
 Если инициализация запущена, но не завершена, методы [AdNetworkSDK.Load](#api_load) и [AdNetworkSDK.Show](#api_show) не отработают корректно и будут сообщать своим слушателям об ошибках
