@@ -490,7 +490,7 @@ The method Initialize initializes **SDK** work.
 
 Parameters of initialization **SDK** [AdNetworkInitParams](#AdNetworkInitParams), implementation of the listener [IAdInitializationListener](#l_initialization) and an array of connectors implemented the interface [ISDKConnector](#SdkConnector) for cooperation with third-party **SDK** are sent to the method.
 
-The methods [AdNetworkSDK.Load](#api_load) and [AdNetworkSDK.Show](#api_show) do not work correctly without initialization. So the errors LoadErrorType.NOT_INITIALIZED_ERROR and ShowErrorType.**NOT_INITIALIZED_ERROR** will be sent to the listeners.
+The methods [AdNetworkSDK.Load](#api_load) and [AdNetworkSDK.Show](#api_show) do not work correctly without initialization. So the errors **LoadErrorType.NOT_INITIALIZED_ERROR** and ShowErrorType.**NOT_INITIALIZED_ERROR** will be sent to the listeners.
 
 If the initialization is run but not completed yet, the methods [AdNetworkSDK.Load](api_load) and [AdNetworkSDK.Show](#api_show) do not work correctly. So the errors **LoadErrorType.INITIALIZATION_NOT_FINISHED** and **ShowErrorType.INITIALIZATION_NOT_FINISHED** will be sent to the listeners.
 
