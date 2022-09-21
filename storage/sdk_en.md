@@ -35,7 +35,7 @@ At the heart of **SDK** work there is a statistic class **AdNetworkSDK** that:
 
 For this, there are open-source statistic methods in the class. These methods are called by users. To cooperate with them, a **SDK** user must develop listener interfaces by him own depending on his needs. Listeners are notified in the background. An example of listener interface see [here](#lib_work).
 
-**SDK** supports integration with third-party advertisement **SDK** via connectors. An example of connector see [here](third_party_SDK).
+**SDK** supports integration with third-party advertisement **SDK** via connectors. An example of connector see [here](#third_party_SDK).
 
 ## Initialization of the library <a name="initialization"></a>
 
@@ -245,7 +245,7 @@ To connect the library to the progect:
 
 1. Select **Add package from git URL** in the panel **Package Manager** :
 
-![integration_0.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_0.png")
+![integration_0.png](/images/integration_0.png)
 
 2. In the opened window enter the link:
 
@@ -255,17 +255,17 @@ where **N** is current version of the library.
 
 3. For loading an example select **AdNetworkSDK**  in the panel **Package Manager**.  Expand a list of examples on the right and click **Import**.
 
-![integration_1.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_1.png")
+![integration_1.png](/images/integration_1.png)
 
 After that, imported examples will be marked with a tick. Examples files will be added to the structure of the project. 
 
-![integration_2.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_2.png")
+![integration_2.png](/images/integration_2.png)
 
-![integration_3.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_3.png")
+![integration_3.png](/images/integration_3.png)
 
 4. To run an example, specify the identifier **GAME_ID** in the editor field:
 
-![integration_4.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_4.png")
+![integration_4.png](/images/integration_4.png)
 
 ## How to work with the library. Example <a name="lib_work"></a>
 
