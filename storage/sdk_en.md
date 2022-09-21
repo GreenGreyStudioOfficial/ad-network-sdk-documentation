@@ -3,8 +3,8 @@
 # SDK work way <a name="manual"></a>
 ## Contents
 - [Initialization of the libraty](#initialization)
-- [Loading of the advertisements](#load)
-- [Show of the advertisement](#show)
+- [Loading of the advertisements](#manual_load)
+- [Show of the advertisement](#manual_show)
 - [Cache system features](#cache)
 - [How to connect the library](#connect_lib)
 - [How to work with the library. Example](#lib_work)
@@ -104,7 +104,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 }
 ```
 
-## Loading of the advertisements <a name="load"></a>
+## Loading of the advertisements <a name="manual_load"></a>
 
 The library connects to the server to select and load the appropriated advertisement for the current user. If the ad server can find no advertisement, it tries to use the user's connectors for loading (if the user implement them). When the successful answer is received, the advertisement is loaded in the cache.
 
@@ -150,7 +150,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 }
 ```
 
-## Show of the advertisement <a name="show"></a>
+## Show of the advertisement <a name="manual_show"></a>
 
 **SDK** shows the advertisement from the cache. If a connector is used for loading the advertisement, the ad will be shown via the connector.
 
@@ -459,6 +459,7 @@ While connecting the library an example of **Applovin** connector is loaded.
 
 <br/><br/>
 <br/><br/>
+[Manual](#manual) | [API](#api)
 _____
 # API <a name="api"></a>
 
@@ -473,9 +474,9 @@ It contains the following public methods:
 • [Show](): show of loaded advertisement.
 
 ## Contents
-- [The method Initialize](#initialize)
-- [The method Load](#load)
-- [The method Show](#show)
+- [The method Initialize](#api_initialize)
+- [The method Load](#api_load)
+- [The method Show](#api_show)
 - [Listeners](#listeners)
 - [Listener of initialization](#l_initialization)
 - [Listener of loading](#l_load)
@@ -483,7 +484,7 @@ It contains the following public methods:
 - [Object model AdNetworkInitParams](#AdNetworkInitParams)
 - [Connectors ISdkConnector](#ISdkConnector)
 
-## The method Initialize <a name ="initialize"></a>
+## The method Initialize <a name ="api_initialize"></a>
 
 The method Initialize initializes **SDK** work.
 
@@ -523,7 +524,7 @@ where:
 | [IAdInitializationListener](#IAdInitializationListener) | _listeher_|Implementation of the listener of initialization |
 | [ISdkConnector[]](#ISdkConnector) | otherConnectors | Array of implementation of connectors with third-party **SDK**|
 
-## The method Load <a name = "load"></a>
+## The method Load <a name = "api_load"></a>
 
 The method loads available advertisement from the network and the cache.
 
@@ -555,7 +556,7 @@ where:
 
 `string placementId` - advertisement placement.
 
-## The method Show <a name = "show"></a>
+## The method Show <a name = "api_show"></a>
 
 It shows loaded advertisement.
 
