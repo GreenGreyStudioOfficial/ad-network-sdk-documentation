@@ -469,9 +469,9 @@ Static class **AdNetworkSDK**  is a public interface for cooperation with **SDK*
 
 It contains the following public methods:
 
-• [Initialize](): initialization of **SDK** work;
-• [Load](): loading of available advertisements from network and chache;
-• [Show](): show of loaded advertisement.
+• [Initialize](#api_initialize): initialization of **SDK** work;
+• [Load](#api_load): loading of available advertisements from network and chache;
+• [Show](#api_show): show of loaded advertisement.
 
 ## Contents
 - [The method Initialize](#api_initialize)
