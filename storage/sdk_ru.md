@@ -36,7 +36,7 @@
 
 Для этого в классе имеются открытые статические методы, вызываемые пользователем. Чтобы реагировать на их выполнение, пользователь **SDK** должен самостоятельно реализовать интерфейсы слушателей, в зависимости от своих нужд. Слушатели оповещаются в фоновом режиме. Пример реализации интерфейса слушателя смотрите [здесь](#lib_work).
 
-Данный **SDK** поддерживает интеграцию с рекламными **SDK** других производителей с помощью коннекторов. Пример реализации коннектора смотрите [здесь](#tjird_party_SDK).
+Данный **SDK** поддерживает интеграцию с рекламными **SDK** других производителей с помощью коннекторов. Пример реализации коннектора смотрите [здесь](#third_party_SDK).
 
 ## Инициализация библиотеки <a name="initialization"></a>
 
@@ -244,7 +244,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 
 1. В панели **Package Manager** выберите **Add package from git URL**:
 
-![integration_0.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_0.png")
+![integration_0.png](/images/integration_0.png)
 
 2. В открывшемся окне введите ссылку
 
@@ -254,17 +254,17 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 
 3. Для загрузки примера использования в панели **Package Manager** выберите **AdNetworkSDK**, в правой части разверните список примеров и нажмите кнопку **Import**.
 
-![integratiom_1.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_1.png")
+![integratiom_1.png](/images/integration_1.png)
 
 После этого рядом с успешно импортированными примерами появится галочка, а сами файлы примеров окажутся в структуре проекта.
 
-![integration_2.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_2.png")
+![integration_2.png](/images/integration_2.png)
 
-![integration_3.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_3.png")
+![integration_3.png](/images/integration_3.png)
 
 4. Для запуска примера необходимо прописать полученный идентификатор **GAME_ID** в соответствующем поле редактора:
 
-![integration_4.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_4.png")
+![integration_4.png](/images/integration_4.png)
 
 # Как работать с библиотекой - пример <a name="lib_work"></a>
 
@@ -452,6 +452,7 @@ public interface ISdkConnector
 
 <br/><br/>
 <br/><br/>
+[Manual](#manual) | [API](#api)
 _____
 # API <a name="api"></a>
 
@@ -461,14 +462,14 @@ _____
 Включает в себя следующие публичные методы:
 
 • [Initialize](#initialize): инициализации работы **SDK**;
-• [Load](#load): загрузка доступного рекламного объявления из сети или из кэша;
-• [Show](#show): показ загруженного рекламного объявления.
+• [Load](#api_load): загрузка доступного рекламного объявления из сети или из кэша;
+• [Show](#api_show): показ загруженного рекламного объявления.
 
 ## Содержание
 
 - [Метод Initialize](#initialize)
-- [Метод Load](#load)
-- [Метод Show](#show)
+- [Метод Load](#api_load)
+- [Метод Show](#api_show)
 - [Слушатели](#listeners)
 - [Слушатель инициализации](#l_initialization)
 - [Слушатель загрузки](#l_load)
@@ -482,10 +483,10 @@ _____
 
 На вход передаются параметры инициализации **SDK** [AdNetworkInitParams](#AdNetworkInitParams), реализация слушателя [IAdInitializationListener](#IAdInitializationListener) и массив коннекторов, реализующих интерфейс [ISDKConnector](#ISDKConnector) для взаимодействия со сторонними рекламными **SDK**.
 
-Без инициализации методы [AdNetworkSDK.Load](#load) и [AdNetworkSDK.Show](#show) не отработают корректно и будут сообщать своим слушателям об ошибках
+Без инициализации методы [AdNetworkSDK.Load](#api_load) и [AdNetworkSDK.Show](#show) не отработают корректно и будут сообщать своим слушателям об ошибках
 **LoadErrorType.NOT_INITIALIZED_ERROR** и **ShowErrorType.NOT_INITIALIZED_ERROR** соответственно.
 
-Если инициализация запущена, но не завершена, методы [AdNetworkSDK.Load](#load) и [AdNetworkSDK.Show](#show) не отработают корректно и будут сообщать своим слушателям об ошибках
+Если инициализация запущена, но не завершена, методы [AdNetworkSDK.Load](#api_load) и [AdNetworkSDK.Show](#api_show) не отработают корректно и будут сообщать своим слушателям об ошибках
 **LoadErrorType.INITIALIZATION_NOT_FINISHED** и **ShowErrorType.INITIALIZATION_NOT_FINISHED**
 соответственно.
 
@@ -519,7 +520,7 @@ public static void Initialize(AdNetworkInitParams _adNetworkInitParams, IAdIniti
 |[IAdInitializationListener](#IAdInitializationListener)| listener| Реализация слушателя инициализации|
 | [ISdkConnector[]](#ISdkConnector) | otherConnectors | Массив реализаций коннекторов со сторонними **SDK**|
 
-## Метод Load <a name = "load"></a>
+## Метод Load <a name = "api_load"></a>
 
 Метод **Load** загружает доступное рекламное объявление из сети или из кеша.
 
@@ -551,7 +552,7 @@ public static void Load(AdType _adType, IAdLoadListener _listener, string _place
 
 `string _placementId` - плейсмент рекламного объявления.
 
-## Метод Show <a name = "show"></a>
+## Метод Show <a name = "api_show"></a>
 
 Показывает загруженное рекламное объявление.
 
