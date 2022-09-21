@@ -556,7 +556,7 @@ public static void Load(AdType _adType, IAdLoadListener _listener, string _place
 
 Показывает загруженное рекламное объявление.
 
-На вход нужно передать [тип рекламного объявления](#adtype), реализацию слушателя [IAdShowListener](#IAdShowListener) и **placementId** рекламного креатива. В текущей версии **placementId** используется только для работы с коннекторами.
+На вход нужно передать [тип рекламного объявления](#adtype), реализацию слушателя [IAdShowListener](#l_show) и **placementId** рекламного креатива. В текущей версии **placementId** используется только для работы с коннекторами.
 
 Метод запускает процесс показа ролика.
 
@@ -581,7 +581,7 @@ public static void Show(AdType _adType, IAdShowListener _listener, string _place
 
 `AdType` - тип рекламного объявления (см. [AdType](#adtype));
 
-`IAdShowListener` - реализация слушателя показа (см. [IAdShowListener](#IAdShowListener));
+`IAdShowListener` - реализация слушателя показа (см. [IAdShowListener](#l_show));
 
 `string _placementId` - плейсмент рекламного объявления.
 
@@ -890,7 +890,7 @@ void Show(AdType _adType, IAdShowListener _listener, string _placementId = null)
 где:
 
 `AdType _adType` - тип рекламного объявления (см. [AdType](#adtype))
-`IAdShowListener _listener` - интерфейс слушателя показа рекламного объявления (см. [IAdShowListener](#IAdShowListener)). 
+`IAdShowListener _listener` - интерфейс слушателя показа рекламного объявления (см. [IAdShowListener](#l_show)). 
 
 **GetSupportedAdTypes** - метод, который возвращает список поддерживаемых типов. Реализация зависит от пользователя.
 
