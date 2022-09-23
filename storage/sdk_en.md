@@ -43,7 +43,7 @@ For this, there are open-source statistic methods in the class. These methods ar
 
 Example:
 
-```
+```C#
 using System.Collections.Generic;
 using GreenGrey.AdNetworkSDK;
 using GreenGrey.AdNetworkSDK.DataModel;
@@ -110,7 +110,7 @@ The library connects to the server to select and load the appropriated advertise
 
 Example:
 
-```
+```C#
 using GreenGrey.AdNetworkSDK;
 using GreenGrey.AdNetworkSDK.DataModel.Enums;
 using GreenGrey.AdNetworkSDK.Interfaces.Listeners.Load;
@@ -156,7 +156,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 
 Example:
 
-```
+```C#
 using GreenGrey.AdNetworkSDK;
 using GreenGrey.AdNetworkSDK.DataModel.Enums;
 using GreenGrey.AdNetworkSDK.Interfaces.Listeners.Show;
@@ -279,7 +279,7 @@ The function **Load** is used for loading. It loads an advertisement from the ne
 
 The code can be tested on the scene **LoadExampleScene** included into the **SDK** package.
 
-```
+```C#
 public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAdLoadListener, IAdShowListener  
 {  
     [SerializeField] private string m_myGameID;  
@@ -410,7 +410,7 @@ Connector is a feature that is used for integration with third-party advertiseme
 
 Description of a connector interface for integration with third-party advertisement **SDK**:
 
-```
+```C#
 public interface ISdkConnector
 {
     bool isInitialized { get; }
@@ -512,7 +512,7 @@ If the initialization of all connectors fail, but **AdNetworkSDK** is successful
 
 **Declaration**:
 
-```
+```C#
 public static void Initialize(AdNetworkInitParams _adNetworkInitParams, IAdInitializationListener _listener, ISdkConnector[] _otherConnectors = null)
 ```
 
@@ -544,7 +544,7 @@ If there is at least one connector, the algorithm will be the following:
 
 **Declaration**:
 
-```
+```C#
 public static void Load(AdType _adType, IAdLoadListener _listener, string _placementId)
 ```
 
@@ -577,7 +577,7 @@ The cache is cleaned every time the show completes successfully or fails.
 
 **Declaration**:
 
-```
+```C#
 public static void Show(AdType _adType, IAdShowListener _listener, string _placementId = null)
 ```
 
@@ -615,7 +615,7 @@ Initialization completion handler is called when the initialization is completed
 
 **Declaration**:
 
-```
+```C#
 public void OnInitializationComplete();
 ```
 
@@ -625,7 +625,7 @@ Initialization non-critical error handler is called when the initialization is c
 
 **Declaration**:
 
-```
+```C#
 void OnInitializationWarning(InitializationWarningType _warningType, string _warningMessage)
 ```
 
@@ -651,7 +651,7 @@ Initialization error handler is called when initialization is failed.
 
 **Declaration**:
 
-```
+```C#
 public void OnInitializationError(InitializationErrorType _error, string _errorMessage);
 ```
 
@@ -688,7 +688,7 @@ Loading completion handler is called when loading is completed successfully.
 
 **Declaration**:
 
-```
+```C#
 void OnLoadComplete(AdType _adType) 
 
 ````
@@ -706,7 +706,7 @@ Loading error handler is called when loading is failed.
 
 **Declaration**:
 
-```
+```C#
 void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)
 ```
 
@@ -753,7 +753,7 @@ A handle of beginning the ad show is called before the show starts.
 
 **Declaration**:
 
-```
+```C#
 void OnShowStart(AdType _adType)
 ```
 
@@ -769,7 +769,7 @@ The handler of completing the ad show is call after the show finished.
 
 **Declaration**:
 
-```
+```C#
 void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)
 ```
 
@@ -794,7 +794,7 @@ The show error handler is called when the show fails.
 
 **Declaration**:
 
-```
+```C#
 void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)
 ```
 
@@ -825,7 +825,7 @@ There is one object model **AdNetworkInitParams** in the advertisement **SDK**, 
 
 **Constuctor**:
 
-```
+```C#
 public AdNetworkInitParams(string _gameId, bool _isTestMode, bool _autoLoadEnabled, List<AdType> _adTypesForAutoLoad)
 ```
 
@@ -856,7 +856,7 @@ It uses the following public methods:
 
 **Declaration**:
 
-```
+```C#
 void Initialize(IAdInitializationListener _listener)
 ```
 
@@ -868,7 +868,7 @@ where:
 
 **Declaration**:
 
-```
+```C#
 void Load(AdType _adType, IAdLoadListener _listener, string _placementId = null)
 ```
 
@@ -889,7 +889,7 @@ where:
 
 **Declaration**:
 
-```
+```C#
 void Show(AdType _adType, IAdShowListener _listener, string _placementId = null)
 ```
 
@@ -902,7 +902,7 @@ where:
 **GetSupportedAdTypes** is a method that returns a list of supported ad types. Its implementation depends on a user.
 
 **Declaration**:
-```
+```C#
 List<AdType> GetSupportedAdTypes()
 ```
 
@@ -910,7 +910,7 @@ List<AdType> GetSupportedAdTypes()
 
 **Declaration**: 
 
-```
+```C#
 string GetSdkId()
 ```
 
