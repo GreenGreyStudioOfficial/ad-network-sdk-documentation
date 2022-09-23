@@ -484,17 +484,17 @@ _____
 На вход передаются параметры инициализации **SDK** [AdNetworkInitParams](#AdNetworkInitParams), реализация слушателя [IAdInitializationListener](#IAdInitializationListener) и массив коннекторов, реализующих интерфейс [ISDKConnector](#ISDKConnector) для взаимодействия со сторонними рекламными **SDK**.
 
 Без инициализации методы [AdNetworkSDK.Load](#api_load) и [AdNetworkSDK.Show](#api_show) не отработают корректно и будут сообщать своим слушателям об ошибках
-**LoadErrorType.NOT_INITIALIZED_ERROR** и **ShowErrorType.NOT_INITIALIZED_ERROR** соответственно.
+**[LoadErrorType.NOT_INITIALIZED_ERROR](#errors_explanation)** и **[ShowErrorType.NOT_INITIALIZED_ERROR](#errors_explanation)** соответственно.
 
 Если инициализация запущена, но не завершена, методы [AdNetworkSDK.Load](#api_load) и [AdNetworkSDK.Show](#api_show) не отработают корректно и будут сообщать своим слушателям об ошибках
-**LoadErrorType.INITIALIZATION_NOT_FINISHED** и **ShowErrorType.INITIALIZATION_NOT_FINISHED**
+**[LoadErrorType.INITIALIZATION_NOT_FINISHED](#errors_explanation)** и **[ShowErrorType.INITIALIZATION_NOT_FINISHED](#errors_explanation)**
 соответственно.
 
-Если **SDK** успешно инициализирован, то при попытке повторной инициализации, вызовется **callback** ее слушателя [IAdInitializationListener.OnInitializationError](#OnInitializationError) с ошибкой **InitializationErrorType.SDK_ALREADY_INITIALIZED**.
+Если **SDK** успешно инициализирован, то при попытке повторной инициализации, вызовется **callback** ее слушателя [IAdInitializationListener.OnInitializationError](#OnInitializationError) с ошибкой **[InitializationErrorType.SDK_ALREADY_INITIALIZED](#errors_explanation)**.
 
-Если **SDK** в процессе инициализации, то при попытке повторной инициализации, вызовется **callback** ее слушателя [IAdInitializationListener.OnInitializationError](#OnInitializationError) с ошибкой **InitializationErrorType.INITIALIZE_PROCESS_ALREADY_STARTED**.
+Если **SDK** в процессе инициализации, то при попытке повторной инициализации, вызовется **callback** ее слушателя [IAdInitializationListener.OnInitializationError](#OnInitializationError) с ошибкой **[InitializationErrorType.INITIALIZE_PROCESS_ALREADY_STARTED](#errors_explanation)**.
 
-Если при инициализации в [AdNetworkInitParams](#AdNetworkInitParams) был передан некорректный **GAME_ID** (null, "", invalid), то будет вызван **callback** слушателя [IAdInitializationListener.OnInitializationError](#OnInitializationError) с ошибкой **InitializationErrorType.GGAD_CONNECTOR_INITIALIZE_FAILED**.
+Если при инициализации в [AdNetworkInitParams](#AdNetworkInitParams) был передан некорректный **GAME_ID** (null, "", invalid), то будет вызван **callback** слушателя [IAdInitializationListener.OnInitializationError](#OnInitializationError) с ошибкой **[InitializationErrorType.GGAD_CONNECTOR_INITIALIZE_FAILED](#errors_explanation)**.
 
 В случае наличия аргументов [ISDKConnector[]](#ISDKConnector) процесс инициализации выстраивается следующим образом: сначала вызывается инициализация **AdNetworkSDK** и только в случае успешной инициализации вызывается инициализация коннекторов переданных в аргументах.
 
@@ -656,7 +656,7 @@ public void OnInitializationError(InitializationErrorType _error, string _errorM
 |InitializationErrorType| error| Тип ошибки|
 |string| errorMessage| Информация об ошибке|
 
-**Варианты ошибок**:
+**Варианты ошибок**: <a name = "errors_explanation"></a>
 
 | Значение| Описание| 
 |---|---|
