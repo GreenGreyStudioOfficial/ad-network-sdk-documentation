@@ -35,7 +35,7 @@ At the heart of **SDK** work there is a statistic class **AdNetworkSDK** that:
 
 For this, there are open-source statistic methods in the class. These methods are called by users. To cooperate with them, a **SDK** user must develop listener interfaces by him own depending on his needs. Listeners are notified in the background. An example of listener interface see [here](#lib_work).
 
-**SDK** supports integration with third-party advertisement **SDK** via connectors. An example of connector see [here](#third_party_SDK).
+**SDK** supports integration with third-party advertisement **SDK** via connectors. An example of connector see [here](./ApplovinConnector.cs).
 
 ## Initialization of the library <a name="initialization"></a>
 
@@ -490,15 +490,15 @@ The method Initialize initializes **SDK** work.
 
 Parameters of initialization **SDK** [AdNetworkInitParams](#AdNetworkInitParams), implementation of the listener [IAdInitializationListener](#l_initialization) and an array of connectors implemented the interface [ISDKConnector](#SdkConnector) for cooperation with third-party **SDK** are sent to the method.
 
-The methods [AdNetworkSDK.Load](#api_load) and [AdNetworkSDK.Show](#api_show) do not work correctly without initialization. So the errors **LoadErrorType.NOT_INITIALIZED_ERROR** and ShowErrorType.**NOT_INITIALIZED_ERROR** will be sent to the listeners.
+The methods [AdNetworkSDK.Load](#api_load) and [AdNetworkSDK.Show](#api_show) do not work correctly without initialization. So the errors **LoadErrorType.NOT_INITIALIZED_ERROR** and ShowErrorType.**[NOT_INITIALIZED_ERROR](#errors_explanation)** will be sent to the listeners.
 
-If the initialization is run but not completed yet, the methods [AdNetworkSDK.Load](api_load) and [AdNetworkSDK.Show](#api_show) do not work correctly. So the errors **LoadErrorType.INITIALIZATION_NOT_FINISHED** and **ShowErrorType.INITIALIZATION_NOT_FINISHED** will be sent to the listeners.
+If the initialization is run but not completed yet, the methods [AdNetworkSDK.Load](api_load) and [AdNetworkSDK.Show](#api_show) do not work correctly. So the errors **[LoadErrorType.INITIALIZATION_NOT_FINISHED](#errors_explanation)** and **[ShowErrorType.INITIALIZATION_NOT_FINISHED](#errors_explanation)** will be sent to the listeners.
 
-If **SDK** is initialized successfully, the repeated initialization calls callback of its listener [IAdInitializationListener.OnInitializationError](#OnInitializationError) with the error **InitializationErrorType.SDK_ALREADY_INITIALIZED**.
+If **SDK** is initialized successfully, the repeated initialization calls callback of its listener [IAdInitializationListener.OnInitializationError](#OnInitializationError) with the error **[InitializationErrorType.SDK_ALREADY_INITIALIZED](#errors_explanation)**.
 
-If **SDK** is initializing, the repeated initialization calls callback of its listener [AdInitializationListener.OnInitializationError](#OnInitializationError) with the error **InitializationErrorType.INITIALIZE_PROCESS_ALREADY_STARTED**.
+If **SDK** is initializing, the repeated initialization calls callback of its listener [AdInitializationListener.OnInitializationError](#OnInitializationError) with the error **[InitializationErrorType.INITIALIZE_PROCESS_ALREADY_STARTED](#errors_explanation)**.
 
-If incorrect **GAME_ID** (null, "", invalid) is sent to [AdNetworkInitParams](#AdNetworkInitParams) while initializing, **callback** of the listener [IAdInitializationListener.OnInitializationError](#OnInitializationError) with the error **InitializationErrorType.GGAD_CONNECTOR_INITIALIZE_FAILED** will be called.
+If incorrect **GAME_ID** (null, "", invalid) is sent to [AdNetworkInitParams](#AdNetworkInitParams) while initializing, **callback** of the listener [IAdInitializationListener.OnInitializationError](#OnInitializationError) with the error **[InitializationErrorType.GGAD_CONNECTOR_INITIALIZE_FAILED](#errors_explanation)** will be called.
 
 If there are arguments of [ISDKConnector[]](#ISdkConnector), the process of initialization will be the following: first, the initialization  **AdNetworkSDK** will be called. Only of the initialization completes successfully, the initialization of connectors sent as arguments will be called.
 
