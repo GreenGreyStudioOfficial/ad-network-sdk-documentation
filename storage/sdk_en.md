@@ -14,8 +14,8 @@
 
 This **SDK** is used for work with the advertisements of two types:
 
-• video advertisement playing in the context of **Unity**;
-• advertisement shown inside web view.
+- video advertisement playing in the context of **Unity**;
+- advertisement shown inside web view.
 
 Depending the server decisions one of the ad type with be shown.
 
@@ -29,9 +29,9 @@ Work with other types of the advertisement is implemented via connectors work.
 
 At the heart of **SDK** work there is a statistic class **AdNetworkSDK** that:
 
-• initialize the library;
-• load an advertisement;
-• show an advertisement.
+- initialize the library;
+- load an advertisement;
+- show an advertisement.
 
 For this, there are open-source statistic methods in the class. These methods are called by users. To cooperate with them, a **SDK** user must develop listener interfaces by him own depending on his needs. Listeners are notified in the background. An example of listener interface see [here](#lib_work).
 
@@ -210,8 +210,8 @@ Cache of the advertisements and their cleaning are done automatically. **SDK**  
 
 Cache cleaning can be:
 
-• when show of the video is finished;
-• after the expiration of video relevance. The validity period of the advertisement is regulated by the advertiser.
+- when show of the video is finished;
+- after the expiration of video relevance. The validity period of the advertisement is regulated by the advertiser.
 
 Features:
 
@@ -469,9 +469,9 @@ Static class **AdNetworkSDK**  is a public interface for cooperation with **SDK*
 
 It contains the following public methods:
 
-• [Initialize](#api_initialize): initialization of **SDK** work;
-• [Load](#api_load): loading of available advertisements from network and chache;
-• [Show](#api_show): show of loaded advertisement.
+- [Initialize](#api_initialize): initialization of **SDK** work;
+- [Load](#api_load): loading of available advertisements from network and chache;
+- [Show](#api_show): show of loaded advertisement.
 
 ## Contents
 - [The method Initialize](#api_initialize)
@@ -595,9 +595,9 @@ Listeners are interfaces that allow to take under control processes of initializ
 
 There are three types of listeners in the system:
 
-• [Listener of initialization IAdInitializationListener](#l_initialization);
-• [Listener of loading IAdLoadListener](#l_load);
-• [Listener of show IAdShowListener](#l_show).
+- [Listener of initialization IAdInitializationListener](#l_initialization);
+- [Listener of loading IAdLoadListener](#l_load);
+- [Listener of show IAdShowListener](#l_show).
 
 ## Listener of initialization <a name = "l_initialization"></a>
 
@@ -605,9 +605,9 @@ An interface of the listener of initialization **SDK** **IAdInitializationListen
 
 It uses the following public methods:
 
-• [OnInitializationComplete](#OnInitializationComplete): initialization completion handler;
-• [OnInitializationError](#OnInitializationError): initialization error handler;
-• [OnInitializationWarning](#OnInitializationWarning): initialization non-critical error handler.
+- [OnInitializationComplete](#OnInitializationComplete): initialization completion handler;
+- [OnInitializationError](#OnInitializationError): initialization error handler;
+- [OnInitializationWarning](#OnInitializationWarning): initialization non-critical error handler.
 
 ### OnInitializationComplete <a name = "OnInitializationComplete"></a>
 
@@ -679,8 +679,8 @@ An interface of the listener of loading **IAdLoadListener** is used to take unde
 
 It uses the following public methods:
 
-• [OnLoadComplete](#OnLoadComplete) - loading completion handler;
-• [OnLoadError](#OnLoadError) - loading error handler.
+- [OnLoadComplete](#OnLoadComplete) - loading completion handler;
+- [OnLoadError](#OnLoadError) - loading error handler.
 
 ### OnLoadComplete <a name ="OnLoadComplete"></a>
 
@@ -743,9 +743,9 @@ An interface of the listener of show **IAdShowListener** is used to take under c
 
 It uses the following public methods:
 
-• [OnShowStart](#OnShowStart) - handler of beginning the ad show;
-• [OnShowComplete](#OnShowComplete) - handler of completing the ad show;
-• [OnShowError](#OnShowError) - show error handler.
+- [OnShowStart](#OnShowStart) - handler of beginning the ad show;
+- [OnShowComplete](#OnShowComplete) - handler of completing the ad show;
+- [OnShowError](#OnShowError) - show error handler.
 
 ### OnShowStart  <a name = "OnShowStart"></a>
 
