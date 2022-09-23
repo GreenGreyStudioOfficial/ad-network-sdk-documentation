@@ -44,7 +44,7 @@
 
 Пример:
 
-```
+```css
 using System.Collections.Generic;
 using GreenGrey.AdNetworkSDK;
 using GreenGrey.AdNetworkSDK.DataModel;
