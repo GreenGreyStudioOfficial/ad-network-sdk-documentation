@@ -30,9 +30,9 @@
 
 В основе работы **SDK** лежит статический класс **AdNetworkSDK**, который:
 
-• инициирует библиотеку;
-• загружает рекламные объявления;
-• показывает рекламные объявления.
+- инициирует библиотеку;
+- загружает рекламные объявления;
+- показывает рекламные объявления.
 
 Для этого в классе имеются открытые статические методы, вызываемые пользователем. Чтобы реагировать на их выполнение, пользователь **SDK** должен самостоятельно реализовать интерфейсы слушателей, в зависимости от своих нужд. Слушатели оповещаются в фоновом режиме. Пример реализации интерфейса слушателя смотрите [здесь](#lib_work).
 
@@ -211,8 +211,8 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 
 Очистка кэша может происходить:
 
-• по завершению показа ролика;
-• по истечению срока его актуальности. Срок актуальности объявления регулирует рекламодатель.
+- по завершению показа ролика;
+- по истечению срока его актуальности. Срок актуальности объявления регулирует рекламодатель.
 
 Особенности работы:
 
@@ -461,9 +461,9 @@ _____
 
 Включает в себя следующие публичные методы:
 
-• [Initialize](#initialize): инициализации работы **SDK**;
-• [Load](#api_load): загрузка доступного рекламного объявления из сети или из кэша;
-• [Show](#api_show): показ загруженного рекламного объявления.
+- [Initialize](#initialize): инициализации работы **SDK**;
+- [Load](#api_load): загрузка доступного рекламного объявления из сети или из кэша;
+- [Show](#api_show): показ загруженного рекламного объявления.
 
 ## Содержание
 
@@ -591,9 +591,9 @@ public static void Show(AdType _adType, IAdShowListener _listener, string _place
 
 В системе используется три вида слушателей:
 
-• [Слушатель инициализации IAdInitializationListener](#l_initialization);
-• [Слушатель загрузки IAdLoadListener](#l_load);
-• [Слушатель показа IAdShowListener](#l_show).
+- [Слушатель инициализации IAdInitializationListener](#l_initialization);
+- [Слушатель загрузки IAdLoadListener](#l_load);
+- [Слушатель показа IAdShowListener](#l_show).
 
 ## Слушатель инициализации <a name = "l_initialization"></a>
 
@@ -601,9 +601,9 @@ public static void Show(AdType _adType, IAdShowListener _listener, string _place
 
 Использует следующие публичные методы:
 
-• [OnInitializationComplete](#OnInitializationComplete): обработчик завершения инициализации;
-• [OnInitializationError](#OnInitializationError): обработчик ошибок инициализации;
-• [OnInitializationWarning](#OnInitializationWarning): обработчик некритических ошибок инициализации.
+- [OnInitializationComplete](#OnInitializationComplete): обработчик завершения инициализации;
+- [OnInitializationError](#OnInitializationError): обработчик ошибок инициализации;
+- [OnInitializationWarning](#OnInitializationWarning): обработчик некритических ошибок инициализации.
 
 ### OnInitializationComplete <a name = "OnInitializationComplete"></a>
 
@@ -674,8 +674,8 @@ public void OnInitializationError(InitializationErrorType _error, string _errorM
 
 Использует следующие публичные методы:
 
-• [OnLoadComplete](#OnLoadComplete) - обработчик завершения загрузки;
-• [OnLoadError](#OnLoadError) - обработчик ошибок загрузки рекламных объявлений.
+- [OnLoadComplete](#OnLoadComplete) - обработчик завершения загрузки;
+- [OnLoadError](#OnLoadError) - обработчик ошибок загрузки рекламных объявлений.
 
 ### OnLoadComplete <a name = "OnLoadComplete"></a> 
 
@@ -737,9 +737,9 @@ void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)
 
 Поддерживает следующие публичные методы:
 
-• [OnShowStart](#OnShowStart) - обработчик начала показа рекламного объявления;
-• [OnShowComplete](#OnShowComplete) - обработчик завершения показа объявления;
-• [OnShowError](#OnShowError) - обработчик ошибок показа рекламного объявления.
+- [OnShowStart](#OnShowStart) - обработчик начала показа рекламного объявления;
+- [OnShowComplete](#OnShowComplete) - обработчик завершения показа объявления;
+- [OnShowError](#OnShowError) - обработчик ошибок показа рекламного объявления.
 
 ### OnShowStart <a name = "OnShowStart"></a> 
 
