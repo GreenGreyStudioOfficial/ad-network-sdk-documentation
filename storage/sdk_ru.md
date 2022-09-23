@@ -111,7 +111,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 
 Пример:
 
-```
+```C#
 using GreenGrey.AdNetworkSDK;
 using GreenGrey.AdNetworkSDK.DataModel.Enums;
 using GreenGrey.AdNetworkSDK.Interfaces.Listeners.Load;
@@ -157,7 +157,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 
 Пример:
 
-```
+```C#
 using GreenGrey.AdNetworkSDK;
 using GreenGrey.AdNetworkSDK.DataModel.Enums;
 using GreenGrey.AdNetworkSDK.Interfaces.Listeners.Show;
@@ -277,7 +277,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 
 Данный код можно протестировать на сцене **LoadExampleScene**, поставляющейся в пакете вместе с **SDK**.
 
-```
+```C#
 public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAdLoadListener, IAdShowListener  
 {  
     [SerializeField] private string m_myGameID;  
@@ -403,7 +403,7 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
 
 Описание интерфейса коннектора для интеграции со сторонним рекламным **SDK**:
 
-```
+```C#
 public interface ISdkConnector
 {
     bool isInitialized { get; }
@@ -508,7 +508,7 @@ _____
 
 **Объявление**:
 
-```
+```C#
 public static void Initialize(AdNetworkInitParams _adNetworkInitParams, IAdInitializationListener _listener, ISdkConnector[] _otherConnectors = null)
 ```
 
@@ -540,7 +540,7 @@ public static void Initialize(AdNetworkInitParams _adNetworkInitParams, IAdIniti
 
 **Объявление**:
 
-```
+```C#
 public static void Load(AdType _adType, IAdLoadListener _listener, string _placementId)
 ```
 
@@ -573,7 +573,7 @@ public static void Load(AdType _adType, IAdLoadListener _listener, string _place
 
 **Объявление**:
 
-```
+```C#
 public static void Show(AdType _adType, IAdShowListener _listener, string _placementId = null)
 ```
 
@@ -611,7 +611,7 @@ public static void Show(AdType _adType, IAdShowListener _listener, string _place
 
 **Объявление**:
 
-```
+```C#
 public void OnInitializationComplete();
 ```
 
@@ -621,7 +621,7 @@ public void OnInitializationComplete();
 
 **Объявление**:
 
-```
+```C#
 void OnInitializationWarning(InitializationWarningType _warningType, string _warningMessage)
 ```
 
@@ -647,7 +647,7 @@ void OnInitializationWarning(InitializationWarningType _warningType, string _war
 
 **Объявление**:
 
-```
+```C#
 public void OnInitializationError(InitializationErrorType _error, string _errorMessage);
 ```
 
@@ -683,7 +683,7 @@ public void OnInitializationError(InitializationErrorType _error, string _errorM
 
 **Объявление**:
 
-```
+```C#
 void OnLoadComplete(AdType _adType) 
 ```
 
@@ -699,7 +699,7 @@ void OnLoadComplete(AdType _adType)
 
 **Объявление**:
 
-```
+```C#
 void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)
 ```
 
@@ -747,7 +747,7 @@ void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)
 
 **Объявление**:
 
-```
+```C#
 void OnShowStart(AdType _adType)
 ```
 
@@ -763,7 +763,7 @@ void OnShowStart(AdType _adType)
 
 **Объявление**:
 
-```
+```C#
 void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)
 ```
 
@@ -788,7 +788,7 @@ void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, st
 
 **Объявление**:
 
-```
+```C#
 void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)
 ```
 
@@ -819,7 +819,7 @@ void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)
 
 **Конструктор**:
 
-```
+```C#
 public AdNetworkInitParams(string _gameId, bool _isTestMode, bool _autoLoadEnabled, List<AdType> _adTypesForAutoLoad)
 ```
 
@@ -850,7 +850,7 @@ public AdNetworkInitParams(string _gameId, bool _isTestMode, bool _autoLoadEnabl
 
 **Объявление**:
 
-```
+```C#
 void Initialize(IAdInitializationListener _listener)
 ```
 
@@ -883,7 +883,7 @@ void Load(AdType _adType, IAdLoadListener _listener, string _placementId = null)
 
 **Объявление**:
 
-```
+```C#
 void Show(AdType _adType, IAdShowListener _listener, string _placementId = null)
 ```
 
@@ -896,7 +896,7 @@ void Show(AdType _adType, IAdShowListener _listener, string _placementId = null)
 
 **Объявление**:
 
-```
+```C#
 List<AdType> GetSupportedAdTypes()
 ```
 
@@ -904,7 +904,7 @@ List<AdType> GetSupportedAdTypes()
 
 **Объявление**: 
 
-```
+```C#
 string GetSdkId()
 ```
 
