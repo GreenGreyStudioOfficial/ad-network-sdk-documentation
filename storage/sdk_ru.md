@@ -190,7 +190,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
         
         public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)
         {
-            Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] complete state\nValidationId: {_validationId}");
+            Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}], state\nValidationId: {_validationId}, platformId: {_platformId}");
             
             // If return _adType == AdType.REWARDED
             // and _showCompletionState == ShowCompletionState.SHOW_COMPLETE_BY_CLOSE_BUTTON
@@ -370,7 +370,7 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
     
     public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)  
     {        
-        Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] complete state\nValidationId: {_validationId} on platform {_platformId}");  
+        Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}],  state\nValidationId: {_validationId}, platformId: {_platformId}");  
     }  
     
     public void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)  
