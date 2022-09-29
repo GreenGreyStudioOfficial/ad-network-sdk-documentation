@@ -1,15 +1,15 @@
 # gg-network-sdk-documentation
 
-Документация рекламного SDK от Green Grey на базе Obsidian.
+Documentation of the advertising SDK from Green Grey based on Obsidian..
 
-Для комфортного использования рекомендуется установить [Obsidian MD](https://obsidian.md/), склонировать репозиторий с документацией себе на диск и открыть папку с как Obsidian project
+For comfortable use, it is recommended to install [Obsidian MD](https://obsidian.md/) and clone the repository with the documentation to your disk and open the folder  as Obsidian project
 
-Или просто использовать данный репозиторий как коллекцию .md файлов.
+Or just use this repository as a collection **.md** files.
 
 # GreenGrey.AdNetworkSDK
-AdNetworkSDK - это SDK для простой и быстрой интеграции рекламы известных брендов в игровые проекты.
+**AdNetworkSDK** - is an SDK for easy and fast integration of advertising of famous brands into game projects.
 
-Как пользоваться SDK + API
+How to use SDK + API:
 - [Руководство (RU)](storage/sdk_ru.md)
 - [Guide (EN)](storage/sdk_en.md)
 
