@@ -188,7 +188,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
             Debug.Log($"Show [{_adType}]: Show started");
         }
         
-        public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)
+        public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)
         {
             Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] complete state\nValidationId: {_validationId}");
             
@@ -368,9 +368,9 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
         m_showButton.interactable = false;  
     }  
     
-    public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)  
+    public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)  
     {        
-        Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] complete state\nValidationId: {_validationId}");  
+        Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] complete state\nValidationId: {_validationId} on platform {_platformId}");  
     }  
     
     public void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)  
@@ -764,7 +764,7 @@ void OnShowStart(AdType _adType)
 **Объявление**:
 
 ```C#
-void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)
+void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)
 ```
 
 где:
@@ -773,6 +773,7 @@ void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, st
 |---|---|---|
 |AdType | AdType | Тип рекламного объявления(см. [AdType](#adtype))|
 |ShowCompletionState | ShowCompletionState | Статус завершения показа рекламы|
+|string | platformId | Идентификатор платформы, которая показывает рекламу|
 |string | validationId| Идентификатор показываемого рекламного объявления для валидации на сервере|
 
 **Варианты статуса завершения показа**:
