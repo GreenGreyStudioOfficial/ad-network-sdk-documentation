@@ -187,9 +187,9 @@ namespace GGADSDK.Samples.LoadExample.Scripts
             Debug.Log($"Show [{_adType}]: Show started");
         }
         
-        public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)
+        public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)
         {
-            Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] complete state\nValidationId: {_validationId}");
+            Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}], state\nValidationId: {_validationId}, platformId: {_platformId}");
             
             // If return _adType == AdType.REWARDED
             // and _showCompletionState == ShowCompletionState.SHOW_COMPLETE_BY_CLOSE_BUTTON
@@ -370,9 +370,9 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
         m_showButton.interactable = false;  
     }  
     
-    public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)  
+    public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)  
     {        
-        Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] complete state\nValidationId: {_validationId}");  
+        Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}], state\nValidationId: {_validationId}, platformId: {_platformId}");  
     }  
     
     public void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)  
@@ -779,6 +779,7 @@ where:
 |---|---|---|
 |AdType | AdType | Advertisement type (see [AdType](#adtype))
 |ShowCompletionState | ShowCompletionState | Status of completing the ad show|
+|string | platformId| Platform identifier, that showed advertisement |
 |string | validationId| Identifier of demonstrated  advertisement for server validation|
 
 **Status variants**:
