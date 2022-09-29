@@ -128,16 +128,19 @@ namespace GGADSDK.Samples.LoadExample.Scripts
                  "Required by some ad service, used only for connectors if support" +
                  "Not need for GreenGrey sdk - can be null or empty.")]
         [SerializeField] private string m_placementId;
+	
         private void Start()
         {
             m_loadButton.onClick.AddListener(LoadButtonAction);
         }
+	
         private void LoadButtonAction()
         {
             Debug.Log("Load started");
             AdNetworkSDK.Load(AdType.REWARDED, this, m_placementId);
         }
-                public void OnLoadComplete(AdType _adType)
+	
+	public void OnLoadComplete(AdType _adType)
         {
             Debug.Log($"Load [{_adType}]: SUCCESS");
             Debug.Log($"Now you can show {_adType} ad");
