@@ -3,8 +3,8 @@
 # SDK work way <a name="manual"></a>
 ## Contents
 - [Initialization of the libraty](#initialization)
-- [Loading of the advertisements](#load)
-- [Show of the advertisement](#show)
+- [Loading of the advertisements](#manual_load)
+- [Show of the advertisement](#manual_show)
 - [Cache system features](#cache)
 - [How to connect the library](#connect_lib)
 - [How to work with the library. Example](#lib_work)
@@ -14,8 +14,8 @@
 
 This **SDK** is used for work with the advertisements of two types:
 
-• video advertisement playing in the context of **Unity**;
-• advertisement shown inside web view.
+- video advertisement playing in the context of **Unity**;
+- advertisement shown inside web view.
 
 Depending the server decisions one of the ad type with be shown.
 
@@ -29,13 +29,13 @@ Work with other types of the advertisement is implemented via connectors work.
 
 At the heart of **SDK** work there is a statistic class **AdNetworkSDK** that:
 
-• initialize the library;
-• load an advertisement;
-• show an advertisement.
+- initialize the library;
+- load an advertisement;
+- show an advertisement.
 
 For this, there are open-source statistic methods in the class. These methods are called by users. To cooperate with them, a **SDK** user must develop listener interfaces by him own depending on his needs. Listeners are notified in the background. An example of listener interface see [here](#lib_work).
 
-**SDK** supports integration with third-party advertisement **SDK** via connectors. An example of connector see [here](third_party_SDK).
+**SDK** supports integration with third-party advertisement **SDK** via connectors. An example of connector see [here](#connector).
 
 ## Initialization of the library <a name="initialization"></a>
 
@@ -43,7 +43,7 @@ For this, there are open-source statistic methods in the class. These methods ar
 
 Example:
 
-```
+```C#
 using System.Collections.Generic;
 using GreenGrey.AdNetworkSDK;
 using GreenGrey.AdNetworkSDK.DataModel;
@@ -104,13 +104,13 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 }
 ```
 
-## Loading of the advertisements <a name="load"></a>
+## Loading of the advertisements <a name="manual_load"></a>
 
 The library connects to the server to select and load the appropriated advertisement for the current user. If the ad server can find no advertisement, it tries to use the user's connectors for loading (if the user implement them). When the successful answer is received, the advertisement is loaded in the cache.
 
 Example:
 
-```
+```C#
 using GreenGrey.AdNetworkSDK;
 using GreenGrey.AdNetworkSDK.DataModel.Enums;
 using GreenGrey.AdNetworkSDK.Interfaces.Listeners.Load;
@@ -150,13 +150,13 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 }
 ```
 
-## Show of the advertisement <a name="show"></a>
+## Show of the advertisement <a name="manual_show"></a>
 
 **SDK** shows the advertisement from the cache. If a connector is used for loading the advertisement, the ad will be shown via the connector.
 
 Example:
 
-```
+```C#
 using GreenGrey.AdNetworkSDK;
 using GreenGrey.AdNetworkSDK.DataModel.Enums;
 using GreenGrey.AdNetworkSDK.Interfaces.Listeners.Show;
@@ -210,8 +210,8 @@ Cache of the advertisements and their cleaning are done automatically. **SDK**  
 
 Cache cleaning can be:
 
-• when show of the video is finished;
-• after the expiration of video relevance. The validity period of the advertisement is regulated by the advertiser.
+- when show of the video is finished;
+- after the expiration of video relevance. The validity period of the advertisement is regulated by the advertiser.
 
 Features:
 
@@ -245,7 +245,7 @@ To connect the library to the progect:
 
 1. Select **Add package from git URL** in the panel **Package Manager** :
 
-![integration_0.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_0.png")
+![integration_0.png](/images/integration_0.png)
 
 2. In the opened window enter the link:
 
@@ -255,17 +255,17 @@ where **N** is current version of the library.
 
 3. For loading an example select **AdNetworkSDK**  in the panel **Package Manager**.  Expand a list of examples on the right and click **Import**.
 
-![integration_1.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_1.png")
+![integration_1.png](/images/integration_1.png)
 
 After that, imported examples will be marked with a tick. Examples files will be added to the structure of the project. 
 
-![integration_2.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_2.png")
+![integration_2.png](/images/integration_2.png)
 
-![integration_3.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_3.png")
+![integration_3.png](/images/integration_3.png)
 
 4. To run an example, specify the identifier **GAME_ID** in the editor field:
 
-![integration_4.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_4.png")
+![integration_4.png](/images/integration_4.png)
 
 ## How to work with the library. Example <a name="lib_work"></a>
 
@@ -279,7 +279,7 @@ The function **Load** is used for loading. It loads an advertisement from the ne
 
 The code can be tested on the scene **LoadExampleScene** included into the **SDK** package.
 
-```
+```C#
 public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAdLoadListener, IAdShowListener  
 {  
     [SerializeField] private string m_myGameID;  
@@ -410,7 +410,7 @@ Connector is a feature that is used for integration with third-party advertiseme
 
 Description of a connector interface for integration with third-party advertisement **SDK**:
 
-```
+```C#
 public interface ISdkConnector
 {
     bool isInitialized { get; }
@@ -459,6 +459,7 @@ While connecting the library an example of **Applovin** connector is loaded.
 
 <br/><br/>
 <br/><br/>
+[Manual](#manual) | [API](#api)
 _____
 # API <a name="api"></a>
 
@@ -468,14 +469,14 @@ Static class **AdNetworkSDK**  is a public interface for cooperation with **SDK*
 
 It contains the following public methods:
 
-• [Initialize](): initialization of **SDK** work;
-• [Load](): loading of available advertisements from network and chache;
-• [Show](): show of loaded advertisement.
+- [Initialize](#api_initialize): initialization of **SDK** work;
+- [Load](#api_load): loading of available advertisements from network and chache;
+- [Show](#api_show): show of loaded advertisement.
 
 ## Contents
-- [The method Initialize](#initialize)
-- [The method Load](#load)
-- [The method Show](#show)
+- [The method Initialize](#api_initialize)
+- [The method Load](#api_load)
+- [The method Show](#api_show)
 - [Listeners](#listeners)
 - [Listener of initialization](#l_initialization)
 - [Listener of loading](#l_load)
@@ -483,21 +484,21 @@ It contains the following public methods:
 - [Object model AdNetworkInitParams](#AdNetworkInitParams)
 - [Connectors ISdkConnector](#ISdkConnector)
 
-## The method Initialize <a name ="initialize"></a>
+## The method Initialize <a name ="api_initialize"></a>
 
 The method Initialize initializes **SDK** work.
 
-Parameters of initialization **SDK** [AdNetworkInitParams](#AdNetworkInitParams), implementation of the listener [IAdInitializationListener]() and an array of connectors implemented the interface [ISDKConnector](#SdkConnector) for cooperation with third-party **SDK** are sent to the method.
+Parameters of initialization **SDK** [AdNetworkInitParams](#AdNetworkInitParams), implementation of the listener [IAdInitializationListener](#l_initialization) and an array of connectors implemented the interface [ISDKConnector](#SdkConnector) for cooperation with third-party **SDK** are sent to the method.
 
-The methods [AdNetworkSDK.Load]() and [AdNetworkSDK.Show]() do not work correctly without initialization. So the errors [LoadErrorType.NOT_INITIALIZED_ERROR]() and [ShowErrorType.NOT_INITIALIZED_ERROR]() will be sent to the listeners.
+The methods [AdNetworkSDK.Load](#api_load) and [AdNetworkSDK.Show](#api_show) do not work correctly without initialization. So the errors **LoadErrorType.NOT_INITIALIZED_ERROR** and ShowErrorType.**[NOT_INITIALIZED_ERROR](#errors_explanation)** will be sent to the listeners.
 
-If the initialization is run but not completed yet, the methods [AdNetworkSDK.Load]() and [AdNetworkSDK.Show]() do not work correctly. So the errors [LoadErrorType.INITIALIZATION_NOT_FINISHED]() and [ShowErrorType.INITIALIZATION_NOT_FINISHED]() will be sent to the listeners.
+If the initialization is run but not completed yet, the methods [AdNetworkSDK.Load](api_load) and [AdNetworkSDK.Show](#api_show) do not work correctly. So the errors **[LoadErrorType.INITIALIZATION_NOT_FINISHED](#errors_explanation)** and **[ShowErrorType.INITIALIZATION_NOT_FINISHED](#errors_explanation)** will be sent to the listeners.
 
-If **SDK** is initialized successfully, the repeated initialization calls callback of its listener [IAdInitializationListener.OnInitializationError](#OnInitializationError) with the error **InitializationErrorType.SDK_ALREADY_INITIALIZED**.
+If **SDK** is initialized successfully, the repeated initialization calls callback of its listener [IAdInitializationListener.OnInitializationError](#OnInitializationError) with the error **[InitializationErrorType.SDK_ALREADY_INITIALIZED](#errors_explanation)**.
 
-If **SDK** is initializing, the repeated initialization calls callback of its listener [AdInitializationListener.OnInitializationError](#OnInitializationError) with the error **InitializationErrorType.INITIALIZE_PROCESS_ALREADY_STARTED**.
+If **SDK** is initializing, the repeated initialization calls callback of its listener [AdInitializationListener.OnInitializationError](#OnInitializationError) with the error **[InitializationErrorType.INITIALIZE_PROCESS_ALREADY_STARTED](#errors_explanation)**.
 
-If incorrect **GAME_ID** (null, "", invalid) is sent to [AdNetworkInitParams](#AdNetworkInitParams) while initializing, **callback** of the listener [IAdInitializationListener.OnInitializationError](#OnInitializationError) with the error **InitializationErrorType.GGAD_CONNECTOR_INITIALIZE_FAILED** will be called.
+If incorrect **GAME_ID** (null, "", invalid) is sent to [AdNetworkInitParams](#AdNetworkInitParams) while initializing, **callback** of the listener [IAdInitializationListener.OnInitializationError](#OnInitializationError) with the error **[InitializationErrorType.GGAD_CONNECTOR_INITIALIZE_FAILED](#errors_explanation)** will be called.
 
 If there are arguments of [ISDKConnector[]](#ISdkConnector), the process of initialization will be the following: first, the initialization  **AdNetworkSDK** will be called. Only of the initialization completes successfully, the initialization of connectors sent as arguments will be called.
 
@@ -511,7 +512,7 @@ If the initialization of all connectors fail, but **AdNetworkSDK** is successful
 
 **Declaration**:
 
-```
+```C#
 public static void Initialize(AdNetworkInitParams _adNetworkInitParams, IAdInitializationListener _listener, ISdkConnector[] _otherConnectors = null)
 ```
 
@@ -520,14 +521,14 @@ where:
 |Type |Name| Description|
 |---|---|---|
 |[AdNetworkInitParams](#AdNetworkInitParams)| _adNetworkInitParams| Parameters of initialization of **Green Grey** ad network|
-| [IAdInitializationListener](#IAdInitializationListener) | _listeher_|Implementation of the listener of initialization |
+| [IAdInitializationListener](#l_initialization) | _listeher_|Implementation of the listener of initialization |
 | [ISdkConnector[]](#ISdkConnector) | otherConnectors | Array of implementation of connectors with third-party **SDK**|
 
-## The method Load <a name = "load"></a>
+## The method Load <a name = "api_load"></a>
 
 The method loads available advertisement from the network and the cache.
 
-The ad type, the implementation of the listener [IAdLoadListener]() and ad **placementId** are sent to the method. The **placementId** is only used for work with connectors in the current version.
+The ad type, the implementation of the listener [IAdLoadListener](#l_load) and ad **placementId** are sent to the method. The **placementId** is only used for work with connectors in the current version.
 
 The method runs the process of loading advertisements. When the process competes, the **callback** of the listener with the same ad type will be called.
 
@@ -543,7 +544,7 @@ If there is at least one connector, the algorithm will be the following:
 
 **Declaration**:
 
-```
+```C#
 public static void Load(AdType _adType, IAdLoadListener _listener, string _placementId)
 ```
 
@@ -551,15 +552,15 @@ where:
 
 `AdType` - advertisement type (see [AdType]());
 
-`IAdLoadListener` - implementation of listener of loading (see [IAdLoadListener]());
+`IAdLoadListener` - implementation of listener of loading (see [IAdLoadListener](#l_load));
 
 `string placementId` - advertisement placement.
 
-## The method Show <a name = "show"></a>
+## The method Show <a name = "api_show"></a>
 
 It shows loaded advertisement.
 
-The ad type, implementation of the listener [IAdShowListener] and advertisement **placementId** are sent to the method. The **placementId** is used only for cooperation with connectors in the current version.
+The ad type, implementation of the listener [IAdShowListener](#l_show) and advertisement **placementId** are sent to the method. The **placementId** is used only for cooperation with connectors in the current version.
 
 The method runs the process of ad show.
 
@@ -576,15 +577,15 @@ The cache is cleaned every time the show completes successfully or fails.
 
 **Declaration**:
 
-```
+```C#
 public static void Show(AdType _adType, IAdShowListener _listener, string _placementId = null)
 ```
 
 where:
 
-`AdType` - advertisement type (see [AdType]());
+`AdType` - advertisement type (see [AdType](#adtype));
 
-`IAdShowListener` - implementation of listener of show (see [IAdShowListener]());
+`IAdShowListener` - implementation of listener of show (see [IAdShowListener](#l_show));
 
 `string placementId` - advertisement placement.
 
@@ -594,9 +595,9 @@ Listeners are interfaces that allow to take under control processes of initializ
 
 There are three types of listeners in the system:
 
-• [Listener of initialization IAdInitializationListener](#l_initialization);
-• [Listener of loading IAdLoadListener](#l_load);
-• [Listener of show IAdShowListener](#l_show).
+- [Listener of initialization IAdInitializationListener](#l_initialization);
+- [Listener of loading IAdLoadListener](#l_load);
+- [Listener of show IAdShowListener](#l_show).
 
 ## Listener of initialization <a name = "l_initialization"></a>
 
@@ -604,9 +605,9 @@ An interface of the listener of initialization **SDK** **IAdInitializationListen
 
 It uses the following public methods:
 
-• [OnInitializationComplete](#OnInitializationComplete): initialization completion handler;
-• [OnInitializationError](#OnInitializationError): initialization error handler;
-• [OnInitializationWarning](#OnInitializationWarning): initialization non-critical error handler.
+- [OnInitializationComplete](#OnInitializationComplete): initialization completion handler;
+- [OnInitializationError](#OnInitializationError): initialization error handler;
+- [OnInitializationWarning](#OnInitializationWarning): initialization non-critical error handler.
 
 ### OnInitializationComplete <a name = "OnInitializationComplete"></a>
 
@@ -614,7 +615,7 @@ Initialization completion handler is called when the initialization is completed
 
 **Declaration**:
 
-```
+```C#
 public void OnInitializationComplete();
 ```
 
@@ -624,7 +625,7 @@ Initialization non-critical error handler is called when the initialization is c
 
 **Declaration**:
 
-```
+```C#
 void OnInitializationWarning(InitializationWarningType _warningType, string _warningMessage)
 ```
 
@@ -650,7 +651,7 @@ Initialization error handler is called when initialization is failed.
 
 **Declaration**:
 
-```
+```C#
 public void OnInitializationError(InitializationErrorType _error, string _errorMessage);
 ```
 
@@ -678,8 +679,8 @@ An interface of the listener of loading **IAdLoadListener** is used to take unde
 
 It uses the following public methods:
 
-• [OnLoadComplete](#OnLoadComplete) - loading completion handler;
-• [OnLoadError](#OnLoadError) - loading error handler.
+- [OnLoadComplete](#OnLoadComplete) - loading completion handler;
+- [OnLoadError](#OnLoadError) - loading error handler.
 
 ### OnLoadComplete <a name ="OnLoadComplete"></a>
 
@@ -687,7 +688,7 @@ Loading completion handler is called when loading is completed successfully.
 
 **Declaration**:
 
-```
+```C#
 void OnLoadComplete(AdType _adType) 
 
 ````
@@ -705,7 +706,7 @@ Loading error handler is called when loading is failed.
 
 **Declaration**:
 
-```
+```C#
 void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)
 ```
 
@@ -742,9 +743,9 @@ An interface of the listener of show **IAdShowListener** is used to take under c
 
 It uses the following public methods:
 
-• [OnShowStart](#OnShowStart) - handler of beginning the ad show;
-• [OnShowComplete](#OnShowComplete) - handler of completing the ad show;
-• [OnShowError](#OnShowError) - show error handler.
+- [OnShowStart](#OnShowStart) - handler of beginning the ad show;
+- [OnShowComplete](#OnShowComplete) - handler of completing the ad show;
+- [OnShowError](#OnShowError) - show error handler.
 
 ### OnShowStart  <a name = "OnShowStart"></a>
 
@@ -752,7 +753,7 @@ A handle of beginning the ad show is called before the show starts.
 
 **Declaration**:
 
-```
+```C#
 void OnShowStart(AdType _adType)
 ```
 
@@ -768,7 +769,7 @@ The handler of completing the ad show is call after the show finished.
 
 **Declaration**:
 
-```
+```C#
 void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)
 ```
 
@@ -793,7 +794,7 @@ The show error handler is called when the show fails.
 
 **Declaration**:
 
-```
+```C#
 void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)
 ```
 
@@ -824,7 +825,7 @@ There is one object model **AdNetworkInitParams** in the advertisement **SDK**, 
 
 **Constuctor**:
 
-```
+```C#
 public AdNetworkInitParams(string _gameId, bool _isTestMode, bool _autoLoadEnabled, List<AdType> _adTypesForAutoLoad)
 ```
 
@@ -855,19 +856,19 @@ It uses the following public methods:
 
 **Declaration**:
 
-```
+```C#
 void Initialize(IAdInitializationListener _listener)
 ```
 
 where:
 
-**IAdInitializationListener** is a listener of initialization (see [IAdInitializationListener](#IAdInitializationListener))
+**IAdInitializationListener** is a listener of initialization (see [IAdInitializationListener](#l_initialization))
 
 **Load** is a method that loads advertisements. Its implementation depends on a user. **Callback** must be returned when it is finished.
 
 **Declaration**:
 
-```
+```C#
 void Load(AdType _adType, IAdLoadListener _listener, string _placementId = null)
 ```
 
@@ -888,7 +889,7 @@ where:
 
 **Declaration**:
 
-```
+```C#
 void Show(AdType _adType, IAdShowListener _listener, string _placementId = null)
 ```
 
@@ -901,7 +902,7 @@ where:
 **GetSupportedAdTypes** is a method that returns a list of supported ad types. Its implementation depends on a user.
 
 **Declaration**:
-```
+```C#
 List<AdType> GetSupportedAdTypes()
 ```
 
@@ -909,7 +910,7 @@ List<AdType> GetSupportedAdTypes()
 
 **Declaration**: 
 
-```
+```C#
 string GetSdkId()
 ```
 

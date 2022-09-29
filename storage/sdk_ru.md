@@ -4,8 +4,8 @@
 
 ## Оглавление
 - [Инициализация библиотеки](#initialization)
-- [Загрузка рекламных объявлений](#load)
-- [Показ рекламного объявления](#show)
+- [Загрузка рекламных объявлений](#manual_load)
+- [Показ рекламного объявления](#manual_show)
 - [Особенности работы системы кэширования](#cache)
 - [Как подключить библиотеку](#connect_lib)
 - [Как работать с библиотекой - пример](#lib_work)
@@ -21,7 +21,7 @@
 
 Решение о показе какого-либо типа рекламы принимается в зависимости от решений сервера.
 
-| | Отображается внутри editor | Останавливает основной поток приложения| Останавливает основной поток приложения |
+| отображается внутри editor | Останавливает основной поток приложения| Останавливает основной поток приложения |
 |---|---|---|
 | видеореклама | да | нет |
 | реклама внутри web-view | нет | да |
@@ -36,7 +36,7 @@
 
 Для этого в классе имеются открытые статические методы, вызываемые пользователем. Чтобы реагировать на их выполнение, пользователь **SDK** должен самостоятельно реализовать интерфейсы слушателей, в зависимости от своих нужд. Слушатели оповещаются в фоновом режиме. Пример реализации интерфейса слушателя смотрите [здесь](#lib_work).
 
-Данный **SDK** поддерживает интеграцию с рекламными **SDK** других производителей с помощью коннекторов. Пример реализации коннектора смотрите [здесь](#tjird_party_SDK).
+Данный **SDK** поддерживает интеграцию с рекламными **SDK** других производителей с помощью коннекторов. Пример реализации коннектора смотрите [здесь](#connector).
 
 ## Инициализация библиотеки <a name="initialization"></a>
 
@@ -44,7 +44,7 @@
 
 Пример:
 
-```
+```C#
 using System.Collections.Generic;
 using GreenGrey.AdNetworkSDK;
 using GreenGrey.AdNetworkSDK.DataModel;
@@ -105,13 +105,13 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 }
 ```
 
-## Загрузка рекламных объявлений <a name="load"></a>
+## Загрузка рекламных объявлений <a name="manual_load"></a>
 
 На данном этапе библиотека просит сервис подобрать и скачать подходящую рекламу для данного пользователя. Если рекламный сервис не смог найти рекламу, то он пытается выполнить загрузку через коннекторы пользователя, если они имеются. После того, как успешный ответ получен, рекламное объявление загружается в кэш.
 
 Пример:
 
-```
+```C#
 using GreenGrey.AdNetworkSDK;
 using GreenGrey.AdNetworkSDK.DataModel.Enums;
 using GreenGrey.AdNetworkSDK.Interfaces.Listeners.Load;
@@ -151,13 +151,13 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 }
 ```
 
-## Показ рекламного объявления <a name="show"></a>
+## Показ рекламного объявления <a name="manual_show"></a>
 
 На данном этапе **SDK** показывает пользователю рекламное объявление из кэша. Если загрузка креатива произошла при помощи коннектора, то и показ будет вызван через данный коннектор.
 
 Пример:
 
-```
+```C#
 using GreenGrey.AdNetworkSDK;
 using GreenGrey.AdNetworkSDK.DataModel.Enums;
 using GreenGrey.AdNetworkSDK.Interfaces.Listeners.Show;
@@ -244,7 +244,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 
 1. В панели **Package Manager** выберите **Add package from git URL**:
 
-![integration_0.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_0.png")
+![integration_0.png](/images/integration_0.png)
 
 2. В открывшемся окне введите ссылку
 
@@ -254,17 +254,17 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 
 3. Для загрузки примера использования в панели **Package Manager** выберите **AdNetworkSDK**, в правой части разверните список примеров и нажмите кнопку **Import**.
 
-![integratiom_1.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_1.png")
+![integratiom_1.png](/images/integration_1.png)
 
 После этого рядом с успешно импортированными примерами появится галочка, а сами файлы примеров окажутся в структуре проекта.
 
-![integration_2.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_2.png")
+![integration_2.png](/images/integration_2.png)
 
-![integration_3.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_3.png")
+![integration_3.png](/images/integration_3.png)
 
 4. Для запуска примера необходимо прописать полученный идентификатор **GAME_ID** в соответствующем поле редактора:
 
-![integration_4.png]("C:\Users\79037\Documents\GG\AdSDK_images\integration_4.png")
+![integration_4.png](/images/integration_4.png)
 
 # Как работать с библиотекой - пример <a name="lib_work"></a>
 
@@ -277,7 +277,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 
 Данный код можно протестировать на сцене **LoadExampleScene**, поставляющейся в пакете вместе с **SDK**.
 
-```
+```C#
 public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAdLoadListener, IAdShowListener  
 {  
     [SerializeField] private string m_myGameID;  
@@ -403,7 +403,7 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
 
 Описание интерфейса коннектора для интеграции со сторонним рекламным **SDK**:
 
-```
+```C#
 public interface ISdkConnector
 {
     bool isInitialized { get; }
@@ -452,6 +452,7 @@ public interface ISdkConnector
 
 <br/><br/>
 <br/><br/>
+[Manual](#manual) | [API](#api)
 _____
 # API <a name="api"></a>
 
@@ -461,14 +462,14 @@ _____
 Включает в себя следующие публичные методы:
 
 - [Initialize](#initialize): инициализации работы **SDK**;
-- [Load](#load): загрузка доступного рекламного объявления из сети или из кэша;
-- [Show](#show): показ загруженного рекламного объявления.
+- [Load](#api_load): загрузка доступного рекламного объявления из сети или из кэша;
+- [Show](#api_show): показ загруженного рекламного объявления.
 
 ## Содержание
 
 - [Метод Initialize](#initialize)
-- [Метод Load](#load)
-- [Метод Show](#show)
+- [Метод Load](#api_load)
+- [Метод Show](#api_show)
 - [Слушатели](#listeners)
 - [Слушатель инициализации](#l_initialization)
 - [Слушатель загрузки](#l_load)
@@ -482,18 +483,18 @@ _____
 
 На вход передаются параметры инициализации **SDK** [AdNetworkInitParams](#AdNetworkInitParams), реализация слушателя [IAdInitializationListener](#IAdInitializationListener) и массив коннекторов, реализующих интерфейс [ISDKConnector](#ISDKConnector) для взаимодействия со сторонними рекламными **SDK**.
 
-Без инициализации методы [AdNetworkSDK.Load](#load) и [AdNetworkSDK.Show](#show) не отработают корректно и будут сообщать своим слушателям об ошибках
-**LoadErrorType.NOT_INITIALIZED_ERROR** и **ShowErrorType.NOT_INITIALIZED_ERROR** соответственно.
+Без инициализации методы [AdNetworkSDK.Load](#api_load) и [AdNetworkSDK.Show](#api_show) не отработают корректно и будут сообщать своим слушателям об ошибках
+**[LoadErrorType.NOT_INITIALIZED_ERROR](#errors_explanation)** и **[ShowErrorType.NOT_INITIALIZED_ERROR](#errors_explanation)** соответственно.
 
-Если инициализация запущена, но не завершена, методы [AdNetworkSDK.Load](#load) и [AdNetworkSDK.Show](#show) не отработают корректно и будут сообщать своим слушателям об ошибках
-**LoadErrorType.INITIALIZATION_NOT_FINISHED** и **ShowErrorType.INITIALIZATION_NOT_FINISHED**
+Если инициализация запущена, но не завершена, методы [AdNetworkSDK.Load](#api_load) и [AdNetworkSDK.Show](#api_show) не отработают корректно и будут сообщать своим слушателям об ошибках
+**[LoadErrorType.INITIALIZATION_NOT_FINISHED](#errors_explanation)** и **[ShowErrorType.INITIALIZATION_NOT_FINISHED](#errors_explanation)**
 соответственно.
 
-Если **SDK** успешно инициализирован, то при попытке повторной инициализации, вызовется **callback** ее слушателя [IAdInitializationListener.OnInitializationError](#OnInitializationError) с ошибкой **InitializationErrorType.SDK_ALREADY_INITIALIZED**.
+Если **SDK** успешно инициализирован, то при попытке повторной инициализации, вызовется **callback** ее слушателя [IAdInitializationListener.OnInitializationError](#OnInitializationError) с ошибкой **[InitializationErrorType.SDK_ALREADY_INITIALIZED](#errors_explanation)**.
 
-Если **SDK** в процессе инициализации, то при попытке повторной инициализации, вызовется **callback** ее слушателя [IAdInitializationListener.OnInitializationError](#OnInitializationError) с ошибкой **InitializationErrorType.INITIALIZE_PROCESS_ALREADY_STARTED**.
+Если **SDK** в процессе инициализации, то при попытке повторной инициализации, вызовется **callback** ее слушателя [IAdInitializationListener.OnInitializationError](#OnInitializationError) с ошибкой **[InitializationErrorType.INITIALIZE_PROCESS_ALREADY_STARTED](#errors_explanation)**.
 
-Если при инициализации в [AdNetworkInitParams](#AdNetworkInitParams) был передан некорректный **GAME_ID** (null, "", invalid), то будет вызван **callback** слушателя [IAdInitializationListener.OnInitializationError](#OnInitializationError) с ошибкой **InitializationErrorType.GGAD_CONNECTOR_INITIALIZE_FAILED**.
+Если при инициализации в [AdNetworkInitParams](#AdNetworkInitParams) был передан некорректный **GAME_ID** (null, "", invalid), то будет вызван **callback** слушателя [IAdInitializationListener.OnInitializationError](#OnInitializationError) с ошибкой **[InitializationErrorType.GGAD_CONNECTOR_INITIALIZE_FAILED](#errors_explanation)**.
 
 В случае наличия аргументов [ISDKConnector[]](#ISDKConnector) процесс инициализации выстраивается следующим образом: сначала вызывается инициализация **AdNetworkSDK** и только в случае успешной инициализации вызывается инициализация коннекторов переданных в аргументах.
 
@@ -507,7 +508,7 @@ _____
 
 **Объявление**:
 
-```
+```C#
 public static void Initialize(AdNetworkInitParams _adNetworkInitParams, IAdInitializationListener _listener, ISdkConnector[] _otherConnectors = null)
 ```
 
@@ -519,7 +520,7 @@ public static void Initialize(AdNetworkInitParams _adNetworkInitParams, IAdIniti
 |[IAdInitializationListener](#IAdInitializationListener)| listener| Реализация слушателя инициализации|
 | [ISdkConnector[]](#ISdkConnector) | otherConnectors | Массив реализаций коннекторов со сторонними **SDK**|
 
-## Метод Load <a name = "load"></a>
+## Метод Load <a name = "api_load"></a>
 
 Метод **Load** загружает доступное рекламное объявление из сети или из кеша.
 
@@ -539,7 +540,7 @@ public static void Initialize(AdNetworkInitParams _adNetworkInitParams, IAdIniti
 
 **Объявление**:
 
-```
+```C#
 public static void Load(AdType _adType, IAdLoadListener _listener, string _placementId)
 ```
 
@@ -551,11 +552,11 @@ public static void Load(AdType _adType, IAdLoadListener _listener, string _place
 
 `string _placementId` - плейсмент рекламного объявления.
 
-## Метод Show <a name = "show"></a>
+## Метод Show <a name = "api_show"></a>
 
 Показывает загруженное рекламное объявление.
 
-На вход нужно передать [тип рекламного объявления](#adtype), реализацию слушателя [IAdShowListener](#IAdShowListener) и **placementId** рекламного креатива. В текущей версии **placementId** используется только для работы с коннекторами.
+На вход нужно передать [тип рекламного объявления](#adtype), реализацию слушателя [IAdShowListener](#l_show) и **placementId** рекламного креатива. В текущей версии **placementId** используется только для работы с коннекторами.
 
 Метод запускает процесс показа ролика.
 
@@ -572,7 +573,7 @@ public static void Load(AdType _adType, IAdLoadListener _listener, string _place
 
 **Объявление**:
 
-```
+```C#
 public static void Show(AdType _adType, IAdShowListener _listener, string _placementId = null)
 ```
 
@@ -580,7 +581,7 @@ public static void Show(AdType _adType, IAdShowListener _listener, string _place
 
 `AdType` - тип рекламного объявления (см. [AdType](#adtype));
 
-`IAdShowListener` - реализация слушателя показа (см. [IAdShowListener](#IAdShowListener));
+`IAdShowListener` - реализация слушателя показа (см. [IAdShowListener](#l_show));
 
 `string _placementId` - плейсмент рекламного объявления.
 
@@ -590,9 +591,9 @@ public static void Show(AdType _adType, IAdShowListener _listener, string _place
 
 В системе используется три вида слушателей:
 
-• [Слушатель инициализации IAdInitializationListener](#l_initialization);
-• [Слушатель загрузки IAdLoadListener](#l_load);
-• [Слушатель показа IAdShowListener](#l_show).
+- [Слушатель инициализации IAdInitializationListener](#l_initialization);
+- [Слушатель загрузки IAdLoadListener](#l_load);
+- [Слушатель показа IAdShowListener](#l_show).
 
 ## Слушатель инициализации <a name = "l_initialization"></a>
 
@@ -610,7 +611,7 @@ public static void Show(AdType _adType, IAdShowListener _listener, string _place
 
 **Объявление**:
 
-```
+```C#
 public void OnInitializationComplete();
 ```
 
@@ -620,7 +621,7 @@ public void OnInitializationComplete();
 
 **Объявление**:
 
-```
+```C#
 void OnInitializationWarning(InitializationWarningType _warningType, string _warningMessage)
 ```
 
@@ -646,7 +647,7 @@ void OnInitializationWarning(InitializationWarningType _warningType, string _war
 
 **Объявление**:
 
-```
+```C#
 public void OnInitializationError(InitializationErrorType _error, string _errorMessage);
 ```
 
@@ -655,7 +656,7 @@ public void OnInitializationError(InitializationErrorType _error, string _errorM
 |InitializationErrorType| error| Тип ошибки|
 |string| errorMessage| Информация об ошибке|
 
-**Варианты ошибок**:
+**Варианты ошибок**: <a name = "errors_explanation"></a>
 
 | Значение| Описание| 
 |---|---|
@@ -682,7 +683,7 @@ public void OnInitializationError(InitializationErrorType _error, string _errorM
 
 **Объявление**:
 
-```
+```C#
 void OnLoadComplete(AdType _adType) 
 ```
 
@@ -698,7 +699,7 @@ void OnLoadComplete(AdType _adType)
 
 **Объявление**:
 
-```
+```C#
 void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)
 ```
 
@@ -746,7 +747,7 @@ void OnLoadError(AdType _adType, LoadErrorType _error, string _errorMessage)
 
 **Объявление**:
 
-```
+```C#
 void OnShowStart(AdType _adType)
 ```
 
@@ -762,7 +763,7 @@ void OnShowStart(AdType _adType)
 
 **Объявление**:
 
-```
+```C#
 void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)
 ```
 
@@ -787,7 +788,7 @@ void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, st
 
 **Объявление**:
 
-```
+```C#
 void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)
 ```
 
@@ -818,7 +819,7 @@ void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)
 
 **Конструктор**:
 
-```
+```C#
 public AdNetworkInitParams(string _gameId, bool _isTestMode, bool _autoLoadEnabled, List<AdType> _adTypesForAutoLoad)
 ```
 
@@ -849,7 +850,7 @@ public AdNetworkInitParams(string _gameId, bool _isTestMode, bool _autoLoadEnabl
 
 **Объявление**:
 
-```
+```C#
 void Initialize(IAdInitializationListener _listener)
 ```
 
@@ -882,20 +883,20 @@ void Load(AdType _adType, IAdLoadListener _listener, string _placementId = null)
 
 **Объявление**:
 
-```
+```C#
 void Show(AdType _adType, IAdShowListener _listener, string _placementId = null)
 ```
 
 где:
 
 `AdType _adType` - тип рекламного объявления (см. [AdType](#adtype))
-`IAdShowListener _listener` - интерфейс слушателя показа рекламного объявления (см. [IAdShowListener](#IAdShowListener)). 
+`IAdShowListener _listener` - интерфейс слушателя показа рекламного объявления (см. [IAdShowListener](#l_show)). 
 
 **GetSupportedAdTypes** - метод, который возвращает список поддерживаемых типов. Реализация зависит от пользователя.
 
 **Объявление**:
 
-```
+```C#
 List<AdType> GetSupportedAdTypes()
 ```
 
@@ -903,7 +904,7 @@ List<AdType> GetSupportedAdTypes()
 
 **Объявление**: 
 
-```
+```C#
 string GetSdkId()
 ```
 
