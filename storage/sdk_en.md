@@ -35,7 +35,7 @@ At the heart of **SDK** work there is a statistic class **AdNetworkSDK** that:
 
 For this, there are open-source statistic methods in the class. These methods are called by users. To cooperate with them, a **SDK** user must develop listener interfaces by him own depending on his needs. Listeners are notified in the background. An example of listener interface see [here](#lib_work).
 
-**SDK** supports integration with third-party advertisement **SDK** via connectors. An example of connector see [here](./ApplovinConnector.cs).
+**SDK** supports integration with third-party advertisement **SDK** via connectors. An example of connector see [here](#ISDKConnector).
 
 ## Initialization of the library <a name="initialization"></a>
 
