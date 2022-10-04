@@ -21,7 +21,7 @@
 
 Решение о показе какого-либо типа рекламы принимается в зависимости от решений сервера.
 
-| отображается внутри editor | Останавливает основной поток приложения| Останавливает основной поток приложения |
+| |  отображается внутри editor| Останавливает основной поток приложения |
 |---|---|---|
 | видеореклама | да | нет |
 | реклама внутри web-view | нет | да |
@@ -36,7 +36,7 @@
 
 Для этого в классе имеются открытые статические методы, вызываемые пользователем. Чтобы реагировать на их выполнение, пользователь **SDK** должен самостоятельно реализовать интерфейсы слушателей, в зависимости от своих нужд. Слушатели оповещаются в фоновом режиме. Пример реализации интерфейса слушателя смотрите [здесь](#lib_work).
 
-Данный **SDK** поддерживает интеграцию с рекламными **SDK** других производителей с помощью коннекторов. Пример реализации коннектора смотрите [здесь](#connector).
+Данный **SDK** поддерживает интеграцию с рекламными **SDK** других производителей с помощью коннекторов. Пример реализации коннектора смотрите в примере, идущем вместе с SDK.
 
 ## Инициализация библиотеки <a name="initialization"></a>
 
@@ -128,16 +128,19 @@ namespace GGADSDK.Samples.LoadExample.Scripts
                  "Required by some ad service, used only for connectors if support" +
                  "Not need for GreenGrey sdk - can be null or empty.")]
         [SerializeField] private string m_placementId;
+	
         private void Start()
         {
             m_loadButton.onClick.AddListener(LoadButtonAction);
         }
+	
         private void LoadButtonAction()
         {
             Debug.Log("Load started");
             AdNetworkSDK.Load(AdType.REWARDED, this, m_placementId);
         }
-                public void OnLoadComplete(AdType _adType)
+	
+	public void OnLoadComplete(AdType _adType)
         {
             Debug.Log($"Load [{_adType}]: SUCCESS");
             Debug.Log($"Now you can show {_adType} ad");
@@ -188,9 +191,9 @@ namespace GGADSDK.Samples.LoadExample.Scripts
             Debug.Log($"Show [{_adType}]: Show started");
         }
         
-        public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)
+        public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)
         {
-            Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] complete state\nValidationId: {_validationId}");
+            Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] state, \nValidationId: {_validationId}, platformId: {_platformId}");
             
             // If return _adType == AdType.REWARDED
             // and _showCompletionState == ShowCompletionState.SHOW_COMPLETE_BY_CLOSE_BUTTON
@@ -250,7 +253,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 
 [https://github.com/GreenGreyStudioOfficial/AdNetworkSDK_release.git#v_N](https://github.com/GreenGreyStudioOfficial/AdNetworkSDK_release.git#v_N)
 
-где **N** - текущая версия библиотеки.
+где **v_N** - текущая версия библиотеки.
 
 3. Для загрузки примера использования в панели **Package Manager** выберите **AdNetworkSDK**, в правой части разверните список примеров и нажмите кнопку **Import**.
 
@@ -368,9 +371,9 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
         m_showButton.interactable = false;  
     }  
     
-    public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)  
+    public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)  
     {        
-        Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] complete state\nValidationId: {_validationId}");  
+       Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] state,\nValidationId: {_validationId}, platformId: {_platformId}");
     }  
     
     public void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)  
@@ -524,7 +527,7 @@ public static void Initialize(AdNetworkInitParams _adNetworkInitParams, IAdIniti
 
 Метод **Load** загружает доступное рекламное объявление из сети или из кеша.
 
-На вход нужно передать [тип рекламного объявления](#adtype), реализацию слушателя [IAdLoadListener](#IAdLoadListener) и **placementId** рекламного креатива. В текущей версии IAdLoadListener используется только для работы с коннекторами.
+На вход нужно передать [тип рекламного объявления](#adtype), реализацию слушателя [IAdLoadListener](#IAdLoadListener) и **placementId** рекламного креатива. В текущей версии **placementId** используется только для работы с коннекторами.
 
 Метод запускает процесс загрузки рекламных объявлений. По завершению процесса загрузки вызовется **callback** слушателя с тем же типом рекламного объявления, с которым был вызван метод **Load**.
 
@@ -764,7 +767,7 @@ void OnShowStart(AdType _adType)
 **Объявление**:
 
 ```C#
-void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)
+void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)
 ```
 
 где:
@@ -773,6 +776,7 @@ void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, st
 |---|---|---|
 |AdType | AdType | Тип рекламного объявления(см. [AdType](#adtype))|
 |ShowCompletionState | ShowCompletionState | Статус завершения показа рекламы|
+|string | platformId | Идентификатор платформы, которая показывает рекламу|
 |string | validationId| Идентификатор показываемого рекламного объявления для валидации на сервере|
 
 **Варианты статуса завершения показа**:

@@ -33,7 +33,7 @@ At the heart of **SDK** work there is a statistic class **AdNetworkSDK** that:
 - load an advertisement;
 - show an advertisement.
 
-For this, there are open-source statistic methods in the class. These methods are called by users. To cooperate with them, a **SDK** user must develop listener interfaces by him own depending on his needs. Listeners are notified in the background. An example of listener interface see [here](#lib_work).
+For this, there are open-source statistic methods in the class. These methods are called by users. To cooperate with them, a **SDK** user must develop listener interfaces by him own depending on his needs. Listeners are notified in the background. An example of listener interface you can see with SDK realization.
 
 **SDK** supports integration with third-party advertisement **SDK** via connectors. An example of connector see [here](#connector).
 
@@ -127,16 +127,19 @@ namespace GGADSDK.Samples.LoadExample.Scripts
                  "Required by some ad service, used only for connectors if support" +
                  "Not need for GreenGrey sdk - can be null or empty.")]
         [SerializeField] private string m_placementId;
+
         private void Start()
         {
             m_loadButton.onClick.AddListener(LoadButtonAction);
         }
+
         private void LoadButtonAction()
         {
             Debug.Log("Load started");
             AdNetworkSDK.Load(AdType.REWARDED, this, m_placementId);
         }
-                public void OnLoadComplete(AdType _adType)
+	
+	public void OnLoadComplete(AdType _adType)
         {
             Debug.Log($"Load [{_adType}]: SUCCESS");
             Debug.Log($"Now you can show {_adType} ad");
@@ -187,9 +190,9 @@ namespace GGADSDK.Samples.LoadExample.Scripts
             Debug.Log($"Show [{_adType}]: Show started");
         }
         
-        public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)
+        public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)
         {
-            Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] complete state\nValidationId: {_validationId}");
+            Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] state,\nValidationId: {_validationId}, platformId: {_platformId}");
             
             // If return _adType == AdType.REWARDED
             // and _showCompletionState == ShowCompletionState.SHOW_COMPLETE_BY_CLOSE_BUTTON
@@ -251,7 +254,7 @@ To connect the library to the progect:
 
 [https://github.com/GreenGreyStudioOfficial/AdNetworkSDK_release.git#v_N](https://github.com/GreenGreyStudioOfficial/AdNetworkSDK_release.git#v_N)
 
-where **N** is current version of the library.
+where **v_N** is current version of the library.
 
 3. For loading an example select **AdNetworkSDK**  in the panel **Package Manager**.  Expand a list of examples on the right and click **Import**.
 
@@ -370,9 +373,9 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
         m_showButton.interactable = false;  
     }  
     
-    public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _validationId)  
+    public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)  
     {        
-        Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] complete state\nValidationId: {_validationId}");  
+        Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] state,\nValidationId: {_validationId}, platformId: {_platformId}");
     }  
     
     public void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)  
@@ -779,6 +782,7 @@ where:
 |---|---|---|
 |AdType | AdType | Advertisement type (see [AdType](#adtype))
 |ShowCompletionState | ShowCompletionState | Status of completing the ad show|
+|string | platformId| Platform identifier, that showed advertisement |
 |string | validationId| Identifier of demonstrated  advertisement for server validation|
 
 **Status variants**:
