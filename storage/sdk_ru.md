@@ -21,7 +21,7 @@
 
 Решение о показе какого-либо типа рекламы принимается в зависимости от решений сервера.
 
-| отображается внутри editor | Останавливает основной поток приложения| Останавливает основной поток приложения |
+| |  отображается внутри editor| Останавливает основной поток приложения |
 |---|---|---|
 | видеореклама | да | нет |
 | реклама внутри web-view | нет | да |
@@ -36,7 +36,7 @@
 
 Для этого в классе имеются открытые статические методы, вызываемые пользователем. Чтобы реагировать на их выполнение, пользователь **SDK** должен самостоятельно реализовать интерфейсы слушателей, в зависимости от своих нужд. Слушатели оповещаются в фоновом режиме. Пример реализации интерфейса слушателя смотрите [здесь](#lib_work).
 
-Данный **SDK** поддерживает интеграцию с рекламными **SDK** других производителей с помощью коннекторов. Пример реализации коннектора смотрите [здесь](#connector).
+Данный **SDK** поддерживает интеграцию с рекламными **SDK** других производителей с помощью коннекторов. Пример реализации коннектора смотрите в примере, идущем вместе с SDK.
 
 ## Инициализация библиотеки <a name="initialization"></a>
 
@@ -193,7 +193,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
         
         public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)
         {
-            Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}], state\nValidationId: {_validationId}, platformId: {_platformId}");
+            Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] state, \nValidationId: {_validationId}, platformId: {_platformId}");
             
             // If return _adType == AdType.REWARDED
             // and _showCompletionState == ShowCompletionState.SHOW_COMPLETE_BY_CLOSE_BUTTON
@@ -373,7 +373,7 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
     
     public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)  
     {        
-        Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}],  state\nValidationId: {_validationId}, platformId: {_platformId}");  
+       Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] state,\nValidationId: {_validationId}, platformId: {_platformId}");
     }  
     
     public void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)  
