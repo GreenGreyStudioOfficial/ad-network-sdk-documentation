@@ -33,7 +33,7 @@ At the heart of **SDK** work there is a statistic class **AdNetworkSDK** that:
 - load an advertisement;
 - show an advertisement.
 
-For this, there are open-source statistic methods in the class. These methods are called by users. To cooperate with them, a **SDK** user must develop listener interfaces by him own depending on his needs. Listeners are notified in the background. An example of listener interface see [here](#lib_work).
+For this, there are open-source statistic methods in the class. These methods are called by users. To cooperate with them, a **SDK** user must develop listener interfaces by him own depending on his needs. Listeners are notified in the background. An example of listener interface you can see with SDK realisation.
 
 **SDK** supports integration with third-party advertisement **SDK** via connectors. An example of connector see [here](#connector).
 
@@ -192,7 +192,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
         
         public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)
         {
-            Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}], state\nValidationId: {_validationId}, platformId: {_platformId}");
+            Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] state,\nValidationId: {_validationId}, platformId: {_platformId}");
             
             // If return _adType == AdType.REWARDED
             // and _showCompletionState == ShowCompletionState.SHOW_COMPLETE_BY_CLOSE_BUTTON
@@ -254,7 +254,7 @@ To connect the library to the progect:
 
 [https://github.com/GreenGreyStudioOfficial/AdNetworkSDK_release.git#v_N](https://github.com/GreenGreyStudioOfficial/AdNetworkSDK_release.git#v_N)
 
-where **N** is current version of the library.
+where **v_N** is current version of the library.
 
 3. For loading an example select **AdNetworkSDK**  in the panel **Package Manager**.  Expand a list of examples on the right and click **Import**.
 
@@ -375,7 +375,7 @@ public class LoadExampleListener : MonoBehaviour, IAdInitializationListener, IAd
     
     public void OnShowComplete(AdType _adType, ShowCompletionState _showCompletionState, string _platformId, string _validationId)  
     {        
-        Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}], state\nValidationId: {_validationId}, platformId: {_platformId}");  
+        Debug.Log($"Show [{_adType}]: Show completed with [{_showCompletionState}] state,\nValidationId: {_validationId}, platformId: {_platformId}");
     }  
     
     public void OnShowError(AdType _adType, ShowErrorType _error, string _errorMessage)  
