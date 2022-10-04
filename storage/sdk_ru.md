@@ -253,7 +253,7 @@ namespace GGADSDK.Samples.LoadExample.Scripts
 
 [https://github.com/GreenGreyStudioOfficial/AdNetworkSDK_release.git#v_N](https://github.com/GreenGreyStudioOfficial/AdNetworkSDK_release.git#v_N)
 
-где **N** - текущая версия библиотеки.
+где **v_N** - текущая версия библиотеки.
 
 3. Для загрузки примера использования в панели **Package Manager** выберите **AdNetworkSDK**, в правой части разверните список примеров и нажмите кнопку **Import**.
 
